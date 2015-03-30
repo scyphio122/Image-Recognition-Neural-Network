@@ -9,8 +9,8 @@ Create_Network::Create_Network(QWidget *parent, Network* network) :
     ui->setupUi(this);
     QIntValidator lE_layersValidator(1,255, this);
     QIntValidator lE_neuronsValidator(1,65535, this);
-    ui->lE_LiczbaWarstw->setValidator(lE_layersValidator);
-    ui->lE_LiczbaNeuronow->setValidator(lE_neuronsValidator);
+    ui->lE_LiczbaWarstw->setValidator(&lE_layersValidator);
+    ui->lE_LiczbaNeuronow->setValidator(&lE_neuronsValidator);
 
     this->network = network;
 }
@@ -27,7 +27,7 @@ Create_Network::~Create_Network()
 void Create_Network::on_lE_LiczbaWarstw_returnPressed()
 {
     bool conversion = false;
-    uint16_t value = ui->lE_LiczbaWarstw->text().toUInt(conversion, 10);
+    uint16_t value = ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10);
     ui->sB_NrWarstwy->setMaximum(value);
     ui->lE_LiczbaNeuronow->setEnabled(true);
     ui->sB_NrWarstwy->setEnabled(true);
@@ -43,13 +43,14 @@ void Create_Network::on_lE_LiczbaWarstw_returnPressed()
 void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
 {
         bool conversion = false;
-        uint16_t number = ui->lE_LiczbaNeuronow->text().toUInt(conversion, 10);
+        uint16_t number = ui->lE_LiczbaNeuronow->text().toUInt(&conversion, 10);
         //
         this->network->SetNeuronsNumber(ui->sB_NrWarstwy->value()-1, number);
 
-        if(ui->sB_NrWarstwy->value()< ui->lE_LiczbaWarstw->text().toUInt(conversion, 10))
+        if((uint16_t)ui->sB_NrWarstwy->value() < ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10))
         {
-            ui->sB_NrWarstwy->setValue(++ui->sB_NrWarstwy->value());
+            int value = (ui->sB_NrWarstwy->value());
+            ui->sB_NrWarstwy->setValue(++value);
             ui->lE_LiczbaNeuronow->selectAll();
         }
         else
@@ -63,25 +64,32 @@ void Create_Network::on_bB_Create_clicked(QAbstractButton *button)
     QDialogButtonBox::StandardButton stdButton = ui->bB_Create->standardButton(button);
     switch (stdButton)
     {
-    case QDialogButtonBox::Ok:
-    {
-       ~Create_Network();
-    }
-    case QDialogButtonBox::Cancel:
-    {
-        this->network->ClearAllNeuronsNumber();
-        this->network->SetLayersNumber(NULL);
-        ~Create_Network();
-    }
-    case QDialogButtonBox::Reset:
-    {
-        this->network->ClearAllNeuronsNumber();
-        this->network->SetLayersNumber(NULL);
-        ui->lE_LiczbaWarstw->setEnabled(true);
-        ui->sB_NrWarstwy->setValue(1);
-        ui->sB_NrWarstwy->setEnabled(false);
-        ui->lE_LiczbaNeuronow->setText();
-        ui->lE_LiczbaNeuronow->setEnabled(false);
-        ui->bB_Create->setEnabled(false);
+        case QDialogButtonBox::Ok:
+        {
+           this->~Create_Network();
+            break;
+        }
+        case QDialogButtonBox::Cancel:
+        {
+            this->network->ClearAllNeuronsNumber();
+            this->network->SetLayersNumber(0);
+            this->~Create_Network();
+            break;
+        }
+        case QDialogButtonBox::Reset:
+        {
+            char text = '0';
+            this->network->ClearAllNeuronsNumber();
+            this->network->SetLayersNumber(0);
+            ui->lE_LiczbaWarstw->setEnabled(true);
+            ui->sB_NrWarstwy->setValue(1);
+            ui->sB_NrWarstwy->setEnabled(false);
+            ui->lE_LiczbaNeuronow->setText(&text);
+            ui->lE_LiczbaNeuronow->setEnabled(false);
+            ui->bB_Create->setEnabled(false);
+            break;
+        }
+        default:
+            break;
     }
 }

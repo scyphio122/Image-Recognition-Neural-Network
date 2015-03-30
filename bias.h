@@ -6,7 +6,7 @@
 class Bias:Neuron
 {
 private:
-    const uint8_t input = 1;
+    uint8_t input;
 public:
     Bias();
     ~Bias();
