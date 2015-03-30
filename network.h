@@ -16,7 +16,8 @@ public:
     Network();
     ~Network();
     void SetLayersNumber(uint8_t number);
-    void SetNeuronsNumber(uint8_t layer, uint16_t number);
+    void SetNeuronsNumber(uint8_t layerIndex, uint16_t number);
+    void ClearAllNeuronsNumber();
     void CreateNetwork();
 };
 

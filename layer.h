@@ -2,7 +2,7 @@
 #define LAYER_H
 #include "neuron.h"
 #include "bias.h"
-
+#include <stdint.h>
 class Layer
 {
 private:
@@ -10,11 +10,13 @@ private:
     vector<Neuron> neuron;
     Bias biasNeuron;
 public:
+
     Layer();
     ~Layer();
     void SetLayerIndex();
     void GetLayerIndex();
     Neuron* GetNeuronAt(uint8_t layer, uint16_t neuron);
+    void ConnectNeuronsBetweenLayers();
 
 };
 

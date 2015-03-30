@@ -33,3 +33,8 @@ void Network::SetNeuronsNumber(uint8_t layerIndex, uint16_t number)
         this->neuronsNumber.at(layerIndex) = number;
     }
 }
+
+void Network::ClearAllNeuronsNumber()
+{
+    this->neuronsNumber.clear();
+}

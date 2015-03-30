@@ -2,6 +2,11 @@
 #define NEURON_H
 
 #include <vector>
+#include "connection.h"
+
+using std::vector;
+
+class Connection;
 
 class Neuron
 {
@@ -11,8 +16,6 @@ private:
 public:
     Neuron();
     ~Neuron();
-    void SetIndex();
-    void ClearInput();
     void CalculateOutput();
     double GetOutput();
 };

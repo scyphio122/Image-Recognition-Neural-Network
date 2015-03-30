@@ -2,6 +2,10 @@
 #define FILEHANDLER_H
 #include <fstream>
 
+using std::ofstream;
+using std::ifstream;
+using std::string;
+
 class FileHandler
 {
 private:
