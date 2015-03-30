@@ -1,0 +1,51 @@
+#include "create_network.h"
+#include "ui_create_network.h"
+
+
+Create_Network::Create_Network(QWidget *parent, Network* network) :
+    QDialog(parent),
+    ui(new Ui::Create_Network)
+{
+    ui->setupUi(this);
+    QIntValidator lE_layersValidator(1,255, this);
+    QIntValidator lE_neuronsValidator(1,65535, this);
+    ui->lE_LiczbaWarstw->setValidator(lE_layersValidator);
+    ui->lE_LiczbaNeuronow->setValidator(lE_neuronsValidator);
+
+    this->network = network;
+}
+
+Create_Network::~Create_Network()
+{
+    delete ui;
+}
+
+void Create_Network::on_lE_LiczbaWarstw_returnPressed()
+{
+    bool conversion = false;
+    uint16_t value = ui->lE_LiczbaWarstw->text().toUInt(conversion, 10);
+    ui->sB_NrWarstwy->setMaximum(value);
+    ui->lE_LiczbaNeuronow->setEnabled(true);
+    ui->sB_NrWarstwy->setEnabled(true);
+    ui->lE_LiczbaWarstw->setEnabled(false);
+    ui->sB_NrWarstwy->setValue(1);
+    ui->lE_LiczbaNeuronow->setFocus();
+}
+
+void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
+{
+        bool conversion = false;
+        uint16_t number = ui->lE_LiczbaNeuronow->text().toUInt(conversion, 10);
+        //  
+        this->network->SetNeuronsNumber(ui->sB_NrWarstwy->value()-1, number);
+        
+        if(ui->sB_NrWarstwy->value()< ui->lE_LiczbaWarstw->text().toUInt(conversion, 10))
+        {
+            ui->sB_NrWarstwy->setValue(++ui->sB_NrWarstwy->value());
+        }
+        else
+        {
+            ui->bB_Create->setEnabled(true);
+            ui->sB
+        }
+}

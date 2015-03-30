@@ -16,6 +16,7 @@ public:
     uint16_t GetIndex();
     void LoadInput();
     void ClearInput();
+    void ConnectNeuronsFromPreviousLayer();
 };
 
 #endif // COMMONNEURON_H

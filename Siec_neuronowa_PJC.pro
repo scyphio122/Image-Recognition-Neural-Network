@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     commonneuron.cpp \
     connection.cpp \
     filehandler.cpp \
-    network.cpp
+    network.cpp \
+    create_network.cpp
 
 HEADERS  += mainwindow.h \
     layer.h \
@@ -29,6 +30,8 @@ HEADERS  += mainwindow.h \
     commonneuron.h \
     connection.h \
     filehandler.h \
-    network.h
+    network.h \
+    create_network.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    create_network.ui
