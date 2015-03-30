@@ -13,8 +13,22 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    layer.cpp \
+    neuron.cpp \
+    bias.cpp \
+    commonneuron.cpp \
+    connection.cpp \
+    filehandler.cpp \
+    network.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    layer.h \
+    neuron.h \
+    bias.h \
+    commonneuron.h \
+    connection.h \
+    filehandler.h \
+    network.h
 
 FORMS    += mainwindow.ui
