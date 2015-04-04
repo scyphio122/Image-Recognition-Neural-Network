@@ -2,6 +2,7 @@
 #define NETWORK_H
 
 #include "layer.h"
+
 #include <vector>
 
 using std::vector;

@@ -24,7 +24,7 @@ void Network::SetLayersNumber(uint8_t number)
  */
 void Network::SetNeuronsNumber(uint8_t layerIndex, uint16_t number)
 {
-    if(layerIndex < neuronsNumber.size())
+    if(layerIndex >= neuronsNumber.size())
     {
         this->neuronsNumber.push_back(number);
     }

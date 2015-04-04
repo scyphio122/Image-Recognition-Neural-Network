@@ -1,8 +1,8 @@
 #include "create_network.h"
 #include "ui_create_network.h"
+#include <cstdlib>
 
-
-Create_Network::Create_Network(QWidget *parent, Network* network) :
+Create_Network::Create_Network(Network* network, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Create_Network)
 {
@@ -14,7 +14,6 @@ Create_Network::Create_Network(QWidget *parent, Network* network) :
 
     this->network = network;
 }
-
 Create_Network::~Create_Network()
 {
     delete ui;
@@ -27,7 +26,8 @@ Create_Network::~Create_Network()
 void Create_Network::on_lE_LiczbaWarstw_returnPressed()
 {
     bool conversion = false;
-    uint16_t value = ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10);
+    uint8_t value = ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10);
+    this->network->SetLayersNumber(value);
     ui->sB_NrWarstwy->setMaximum(value);
     ui->lE_LiczbaNeuronow->setEnabled(true);
     ui->sB_NrWarstwy->setEnabled(true);
@@ -55,41 +55,38 @@ void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
         }
         else
         {
-            ui->bB_Create->setEnabled(true);
+            ui->pB_Accept->setEnabled(true);
+            ui->pb_Cancel->setEnabled(true);
+            ui->pB_Retry->setEnabled(true);
         }
 }
 
-void Create_Network::on_bB_Create_clicked(QAbstractButton *button)
+
+void Create_Network::on_pB_Accept_clicked()
 {
-    QDialogButtonBox::StandardButton stdButton = ui->bB_Create->standardButton(button);
-    switch (stdButton)
-    {
-        case QDialogButtonBox::Ok:
-        {
-           this->~Create_Network();
-            break;
-        }
-        case QDialogButtonBox::Cancel:
-        {
-            this->network->ClearAllNeuronsNumber();
-            this->network->SetLayersNumber(0);
-            this->~Create_Network();
-            break;
-        }
-        case QDialogButtonBox::Reset:
-        {
-            char text = '0';
-            this->network->ClearAllNeuronsNumber();
-            this->network->SetLayersNumber(0);
-            ui->lE_LiczbaWarstw->setEnabled(true);
-            ui->sB_NrWarstwy->setValue(1);
-            ui->sB_NrWarstwy->setEnabled(false);
-            ui->lE_LiczbaNeuronow->setText(&text);
-            ui->lE_LiczbaNeuronow->setEnabled(false);
-            ui->bB_Create->setEnabled(false);
-            break;
-        }
-        default:
-            break;
-    }
+     this->close();
+}
+
+
+void Create_Network::on_pb_Cancel_clicked()
+{
+    this->network->ClearAllNeuronsNumber();
+    this->network->SetLayersNumber(0);
+    this->close();
+}
+
+
+void Create_Network::on_pB_Retry_clicked()
+{
+    char text = '0';
+    this->network->ClearAllNeuronsNumber();
+    this->network->SetLayersNumber(0);
+    ui->lE_LiczbaWarstw->setEnabled(true);
+    ui->sB_NrWarstwy->setValue(1);
+    ui->sB_NrWarstwy->setEnabled(false);
+    ui->lE_LiczbaNeuronow->setText(&text);
+    ui->lE_LiczbaNeuronow->setEnabled(false);
+    ui->pB_Accept->setEnabled(false);
+    ui->pb_Cancel->setEnabled(false);
+    ui->pB_Retry->setEnabled(false);
 }

@@ -16,7 +16,7 @@ private:
     Network* network;
 
 public:
-    explicit Create_Network(QWidget *parent = 0, Network *network);
+    explicit Create_Network( Network *network, QWidget *parent);
     ~Create_Network();
 
 private slots:
@@ -24,7 +24,11 @@ private slots:
 
     void on_lE_LiczbaNeuronow_returnPressed();
 
-    void on_bB_Create_clicked(QAbstractButton *button);
+    void on_pB_Accept_clicked();
+
+    void on_pb_Cancel_clicked();
+
+    void on_pB_Retry_clicked();
 
 private:
     Ui::Create_Network *ui;
