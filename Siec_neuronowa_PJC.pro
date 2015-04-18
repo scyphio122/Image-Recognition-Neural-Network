@@ -35,3 +35,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     create_network.ui
+
+INCLUDEPATH += D:\opencv-mingw\install\include
+LIBS += -L D:/opencv-mingw/install/x64/mingw/bin”
+LIBS += -lopencv_core249 -lopencv_highgui249 -lopencv_imgproc249

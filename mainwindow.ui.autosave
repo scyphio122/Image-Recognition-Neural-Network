@@ -84,14 +84,27 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>210</x>
        <y>100</y>
        <width>121</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Usuń wczytaną sieć</string>
+      <string>Usuń zbudowaną sieć</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>100</y>
+       <width>111</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Buduj sieć</string>
      </property>
     </widget>
    </widget>

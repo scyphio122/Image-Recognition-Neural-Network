@@ -1,21 +1,24 @@
 #include "create_network.h"
 #include "ui_create_network.h"
 #include <cstdlib>
+#include <QMessageBox>
 
 Create_Network::Create_Network(Network* network, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Create_Network)
 {
     ui->setupUi(this);
-    QIntValidator lE_layersValidator(1,255, this);
-    QIntValidator lE_neuronsValidator(1,65535, this);
-    ui->lE_LiczbaWarstw->setValidator(&lE_layersValidator);
-    ui->lE_LiczbaNeuronow->setValidator(&lE_neuronsValidator);
+    lE_layersValidator = new QIntValidator(1,255, this);
+    lE_neuronsValidator = new QIntValidator(1,65535, this);
+    ui->lE_LiczbaWarstw->setValidator(lE_layersValidator);
+    ui->lE_LiczbaNeuronow->setValidator(lE_neuronsValidator);
 
     this->network = network;
 }
 Create_Network::~Create_Network()
 {
+    delete lE_layersValidator;
+    delete lE_neuronsValidator;
     delete ui;
 }
 
@@ -78,15 +81,12 @@ void Create_Network::on_pb_Cancel_clicked()
 
 void Create_Network::on_pB_Retry_clicked()
 {
-    char text = '0';
     this->network->ClearAllNeuronsNumber();
     this->network->SetLayersNumber(0);
     ui->lE_LiczbaWarstw->setEnabled(true);
     ui->sB_NrWarstwy->setValue(1);
     ui->sB_NrWarstwy->setEnabled(false);
-    ui->lE_LiczbaNeuronow->setText(&text);
+    ui->lE_LiczbaNeuronow->clear();
     ui->lE_LiczbaNeuronow->setEnabled(false);
     ui->pB_Accept->setEnabled(false);
-    ui->pb_Cancel->setEnabled(false);
-    ui->pB_Retry->setEnabled(false);
 }

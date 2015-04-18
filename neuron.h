@@ -10,14 +10,19 @@ class Connection;
 
 class Neuron
 {
-private:
+protected:
     double output;
-    vector<Connection> connection;
+    vector<Connection> targetNeuronConnection;
+
 public:
     Neuron();
     ~Neuron();
     void CalculateOutput();
     double GetOutput();
+    void ClearConnection();
+    void ClearOutput();
+    void CreateTargetNeuronConnection(Connection *connection);
+    void ClearTargetNeuronConnection();
 };
 
 #endif // NEURON_H

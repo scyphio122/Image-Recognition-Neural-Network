@@ -3,13 +3,17 @@
 #include "neuron.h"
 #include <vector>
 #include <stdint.h>
+#include "layer.h"
 
-class CommonNeuron:Neuron
+class Layer;
+
+class CommonNeuron:public Neuron
 {
 private:
-    uint16_t index;
     double input;
-    vector<Connection> connectionFrom;
+    vector<Connection*> sourceNeuronConnection;
+
+    void ClearSourceNeuronConnection();
 public:
     CommonNeuron();
     ~CommonNeuron();
@@ -17,7 +21,9 @@ public:
     uint16_t GetIndex();
     void LoadInput();
     void ClearInput();
-    void ConnectNeuronsFromPreviousLayer();
+    void ConnectNeuronsFromPreviousLayer(Layer* previousLayer);
+    void CreateSourceNeuronConnection(Connection* connection);
+    void ClearConnections();
 };
 
 #endif // COMMONNEURON_H

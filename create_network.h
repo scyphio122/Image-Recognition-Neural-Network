@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "network.h"
 #include <QAbstractButton>
+#include <QValidator>
 namespace Ui {
 class Create_Network;
 }
@@ -13,6 +14,9 @@ class Create_Network : public QDialog
 {
     Q_OBJECT
 private:
+    QIntValidator *lE_neuronsValidator;
+    QIntValidator *lE_layersValidator;
+
     Network* network;
 
 public:

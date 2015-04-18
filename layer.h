@@ -2,21 +2,25 @@
 #define LAYER_H
 #include "neuron.h"
 #include "bias.h"
+#include "commonneuron.h"
 #include <stdint.h>
+
+class CommonNeuron;
+
 class Layer
 {
 private:
     uint8_t index;
-    vector<Neuron> neuron;
+    vector<CommonNeuron> neuron;
     Bias biasNeuron;
 public:
 
-    Layer();
+    Layer(uint8_t index, uint16_t neuronsNumber);
     ~Layer();
-    void SetLayerIndex();
+    void SetLayerIndex(uint8_t number);
     void GetLayerIndex();
-    Neuron* GetNeuronAt(uint8_t layer, uint16_t neuron);
-    void ConnectNeuronsBetweenLayers();
+    CommonNeuron *GetNeuronAt(uint16_t neuronIndex);
+    void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer);
 
 };
 
