@@ -2,16 +2,15 @@
 #define NETWORK_H
 
 #include "layer.h"
-#include <vector>
+#include <QVector>
 
-using std::vector;
 
 class Network
 {
 private:
     uint8_t layersNumber;
-    vector<uint16_t> neuronsNumber;
-    vector<Layer> layer;
+    QVector<uint16_t> neuronsNumber;
+    QVector<Layer> layer;
 public:
     Network();
     ~Network();

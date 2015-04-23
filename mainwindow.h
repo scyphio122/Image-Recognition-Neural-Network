@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include "create_network.h"
+#include "create_network_dialog.h"
 #include "network.h"
 #include <QMainWindow>
 

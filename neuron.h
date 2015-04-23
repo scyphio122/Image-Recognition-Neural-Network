@@ -1,18 +1,17 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-#include <vector>
+#include <QVector>
 #include "connection.h"
 
-using std::vector;
 
 class Connection;
-
+class CommonNeuron;
 class Neuron
 {
 protected:
     double output;
-    vector<Connection> targetNeuronConnection;
+    QVector<Connection> targetNeuronConnection;
 
 public:
     Neuron();
@@ -23,6 +22,7 @@ public:
     void ClearOutput();
     void CreateTargetNeuronConnection(Connection *connection);
     void ClearTargetNeuronConnection();
+    void ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
 };
 
 #endif // NEURON_H

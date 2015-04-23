@@ -20,10 +20,11 @@ void CommonNeuron::ConnectNeuronsFromPreviousLayer(Layer* previousLayer)
 void CommonNeuron::CreateSourceNeuronConnection(Connection* connection)
 {
     this->sourceNeuronConnection.push_back(connection);
+
 }
 void CommonNeuron::ClearSourceNeuronConnection()
 {
-    if(!this-sourceNeuronConnection.empty())
+    if(!this->sourceNeuronConnection.empty())
     {
         this->sourceNeuronConnection.clear();
     }

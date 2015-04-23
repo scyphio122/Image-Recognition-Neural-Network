@@ -1,17 +1,17 @@
 #ifndef COMMONNEURON_H
 #define COMMONNEURON_H
 #include "neuron.h"
-#include <vector>
+#include <QVector>
 #include <stdint.h>
 #include "layer.h"
 
 class Layer;
 
-class CommonNeuron:public Neuron
+class CommonNeuron : public Neuron
 {
 private:
     double input;
-    vector<Connection*> sourceNeuronConnection;
+    QVector<Connection*> sourceNeuronConnection;
 
     void ClearSourceNeuronConnection();
 public:

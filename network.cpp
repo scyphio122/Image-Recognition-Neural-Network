@@ -47,13 +47,13 @@ void Network::SetNeuronsNumber(uint8_t layerIndex, uint16_t number)
     }
     else
     {
-        this->neuronsNumber.at(layerIndex) = number;
+        this->neuronsNumber.replace(layerIndex, number);
     }
 }
 
 /**
  * @brief Network::ClearAllNeuronsNumber
- * This function is called in order to clear the neuronsNumber vector. It contains the numbers of neurons in each of the layers
+ * This function is called in order to clear the neuronsNumber QVector. It contains the numbers of neurons in each of the layers
  */
 void Network::ClearAllNeuronsNumber()
 {
@@ -62,14 +62,13 @@ void Network::ClearAllNeuronsNumber()
 
 void Network::CreateNetwork()
 {
-    for(uint8_t index=0; index<layersNumber; index++)
+    //  Go from first to the last but one layer
+    for(uint8_t index=0; index<(layersNumber-1); index++)
     {
         Layer lay(index, this->neuronsNumber[index]);
+        //  Create layer and it's neurons
         layer.push_back(lay);
-
-        if(index>=1)
-        {
-            //layer[index].ConnectNeuronsBetweenLayers();
-        }
+        //  Connect neurons between layers
+        layer[index].ConnectNeuronsBetweenLayers(&layer[index], &layer[index+1], CONNECTION_WEIGHT_RANDOM);
     }
 }

@@ -5,22 +5,24 @@
 #include "commonneuron.h"
 #include <stdint.h>
 
-class CommonNeuron;
+
+
+//class CommonNeuron;
 
 class Layer
 {
 private:
     uint8_t index;
-    vector<CommonNeuron> neuron;
+    QVector<CommonNeuron> neuron;
     Bias biasNeuron;
 public:
-
+    Layer();
     Layer(uint8_t index, uint16_t neuronsNumber);
     ~Layer();
     void SetLayerIndex(uint8_t number);
     void GetLayerIndex();
     CommonNeuron *GetNeuronAt(uint16_t neuronIndex);
-    void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer);
+    void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile);
 
 };
 
