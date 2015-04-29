@@ -32,6 +32,15 @@ void Neuron::ClearTargetNeuronConnection()
         this->targetNeuronConnection.clear();
     }
 }
+uint16_t Neuron::ConnectionsSize()
+{
+    return this->targetNeuronConnection.size();
+}
+
+Connection* Neuron::GetConnectionAt(uint16_t index)
+{
+    return &(this->targetNeuronConnection[index]);
+}
 
 /*void Neuron::ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile)
 {

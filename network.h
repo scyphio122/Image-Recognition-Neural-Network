@@ -19,6 +19,8 @@ public:
     uint8_t GetLayersNumber();
     void ClearAllNeuronsNumber();
     void CreateNetwork();
+
+    void TestNetwork();
 };
 
 #endif // NETWORK_H

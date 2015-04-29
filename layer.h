@@ -23,7 +23,7 @@ public:
     void GetLayerIndex();
     CommonNeuron *GetNeuronAt(uint16_t neuronIndex);
     void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile);
-
+    uint16_t GetNeuronsNumber();
 };
 
 #endif // LAYER_H

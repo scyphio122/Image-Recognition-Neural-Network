@@ -67,6 +67,8 @@ void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
 
 void Create_Network::on_pB_Accept_clicked()
 {
+     this->network->CreateNetwork();
+    this->network->TestNetwork();
      this->close();
 }
 

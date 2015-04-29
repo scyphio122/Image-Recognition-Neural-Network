@@ -23,6 +23,8 @@ public:
     void CreateTargetNeuronConnection(Connection *connection);
     void ClearTargetNeuronConnection();
     void ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
+
+    uint16_t ConnectionsSize();
 };
 
 #endif // NEURON_H

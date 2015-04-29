@@ -2,22 +2,27 @@
 #define NETWORK_H
 
 #include "layer.h"
-#include <vector>
+#include <QVector>
 
-using std::vector;
+class FileHandler;
 
-class Network
+class Network:  public FileHandler
 {
 private:
     uint8_t layersNumber;
-    vector<uint16_t> neuronsNumber;
-
+    QVector<uint16_t> neuronsNumber;
+    QVector<Layer> layer;
 public:
     Network();
     ~Network();
     void SetLayersNumber(uint8_t number);
     void SetNeuronsNumber(uint8_t layerIndex, uint16_t number);
+    uint8_t GetLayersNumber();
+    void ClearAllNeuronsNumber();
     void CreateNetwork();
+    void SaveNetwork();
+    
+    void TestNetwork();
 };
 
 #endif // NETWORK_H

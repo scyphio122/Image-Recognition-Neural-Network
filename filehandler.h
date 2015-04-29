@@ -6,6 +6,13 @@ using std::ofstream;
 using std::ifstream;
 using std::string;
 
+
+#define     LOADING_OK          true
+#define     SAVING_OK           true
+#define     FILE_EMPTY          false
+#define     FILE_NOT_OPENED     false
+
+
 class FileHandler
 {
 protected:
@@ -14,10 +21,10 @@ protected:
 public:
     FileHandler();
     ~FileHandler();
-    void SetOfstream(string directory);
-    void SetIfstream(string directory);
-    void SaveData();
-    void LoadData();
+    void SetOfstream(string directory, ofstream stream);
+    void SetIfstream(string directory, ifstream stream);
+    bool SaveData(string data);
+    bool LoadData(string &data);
 };
 
 #endif // FILEHANDLER_H

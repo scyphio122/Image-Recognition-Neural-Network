@@ -12,12 +12,12 @@ class CommonNeuron : public Neuron
 private:
     double input;
     QVector<Connection*> sourceNeuronConnection;
-
+    uint16_t index;
     void ClearSourceNeuronConnection();
 public:
     CommonNeuron();
     ~CommonNeuron();
-    void SetIndex();
+    void SetIndex(uint16_t index);
     uint16_t GetIndex();
     void LoadInput();
     void ClearInput();

@@ -35,3 +35,12 @@ void CommonNeuron::ClearConnections()
     this->ClearSourceNeuronConnection();
     this->ClearTargetNeuronConnection();
 }
+void CommonNeuron::SetIndex(uint16_t index)
+{
+    this->index = index;
+}
+
+uint16_t CommonNeuron::GetIndex()
+{
+    return this->index;
+}

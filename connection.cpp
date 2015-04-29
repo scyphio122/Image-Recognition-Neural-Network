@@ -16,7 +16,11 @@ void Connection::RandomizeWeight()
     this->weight = double(rand()/RAND_MAX)*(MAX_WEIGHT - MIN_WEIGHT) + MIN_WEIGHT;
 }
 
-void Connection::SetNeuronAddress(CommonNeuron *targetNeuron)
+void Connection::SetNeuronAddress(Neuron *targetNeuron)
 {
     this->targetNeuron = targetNeuron;
+}
+double Connection::GetWeight()
+{
+    return this->weight;
 }
