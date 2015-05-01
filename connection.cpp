@@ -24,3 +24,8 @@ double Connection::GetWeight()
 {
     return this->weight;
 }
+
+void Connection::SetWeight(double weightToSet)
+{
+    this->weight = weightToSet;
+}

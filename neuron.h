@@ -3,7 +3,7 @@
 
 #include <QVector>
 #include "connection.h"
-
+#include <stdint-gcc.h>
 
 class Connection;
 class CommonNeuron;
@@ -18,6 +18,7 @@ public:
     ~Neuron();
     void CalculateOutput();
     double GetOutput();
+    Connection* GetConnectionAt(uint16_t index);
     void ClearConnection();
     void ClearOutput();
     void CreateTargetNeuronConnection(Connection *connection);

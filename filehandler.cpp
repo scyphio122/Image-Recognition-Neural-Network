@@ -18,11 +18,18 @@ FileHandler::~FileHandler()
  * @param directory                 -   The directory of the file
  *
  * @param stream                    -   The stream which loadFromFile will point to.
+ *
+ * @return                          -   True if opening ok, false if file doesn't exist
  */
-void FileHandler::SetIfstream(string directory, ifstream stream)
+bool FileHandler::SetIfstream(string directory, ifstream *stream)
 {
-    this->loadFromFile = &stream;
-    this->loadFromFile->open(directory.c_str());
+    this->loadFromFile = stream;
+    if(!loadFromFile->is_open())
+        this->loadFromFile->open(directory.c_str());
+    if(loadFromFile->is_open())
+        return  true;
+    else
+        return false;
 }
 
 /**
@@ -30,9 +37,9 @@ void FileHandler::SetIfstream(string directory, ifstream stream)
  * @param directory                 -   Specified file in the hard drive.If not existing, it will be created.
  * @param stream                    -   The stream which saveToFile will point to.
  */
-void FileHandler::SetOfstream(string directory, ofstream stream)
+void FileHandler::SetOfstream(string directory, ofstream *stream)
 {
-    this->saveToFile = &stream;
+    this->saveToFile = stream;
     this->saveToFile->open(directory.c_str());
 }
 
@@ -65,8 +72,10 @@ bool FileHandler::LoadData(string &data)
         return FILE_NOT_OPENED;
 
     string buffer;
-    getline(*this->loadFromFile, buffer, ';');
-
+    do
+    {
+        getline(*this->loadFromFile, buffer, ';');
+    }while(buffer == " " || buffer == "\n");
     if(!this->loadFromFile->eof())
     {
         data = buffer;

@@ -1,4 +1,5 @@
 #include "layer.h"
+#include <QString>
 Layer::Layer()
 {
 
@@ -21,7 +22,7 @@ void Layer::SetLayerIndex(uint8_t number)
     this->index = number;
 }
 
-void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile)
+void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile, ifstream* loadToFile)
 {
     Connection con;
 
@@ -31,7 +32,13 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
         if(connectionWeightRandom_Or_FromFile == CONNECTION_WEIGHT_RANDOM)
             con.RandomizeWeight();
         else
-            //  TODO: LOAD WEIGHT FROM FILE
+        {
+            string data;
+            con.SetIfstream(" ", loadToFile);
+            con.LoadData(data);
+            QString qdata = QString::fromStdString(data);
+            con.SetWeight(qdata.toDouble());
+        }
 
 
         //  Set the address of the connection to the output neuron in next layer

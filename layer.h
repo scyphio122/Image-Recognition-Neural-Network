@@ -4,7 +4,7 @@
 #include "bias.h"
 #include "commonneuron.h"
 #include <stdint.h>
-
+#include <string>
 
 
 //class CommonNeuron;
@@ -22,7 +22,7 @@ public:
     void SetLayerIndex(uint8_t number);
     void GetLayerIndex();
     CommonNeuron *GetNeuronAt(uint16_t neuronIndex);
-    void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile);
+    void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile, std::ifstream *loadToFile);
     uint16_t GetNeuronsNumber();
 };
 

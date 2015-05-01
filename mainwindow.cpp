@@ -35,6 +35,9 @@ void MainWindow::on_pB_BudujSiec_clicked()
     else
     {
         //TODO: Wczytywanie sieci z pliku
+        string dir;
+        dir = "C:/Users/Konrad/Desktop/network.txt";
+        this->network.LoadNetwork(dir.c_str());
     }
     if(this->network.GetLayersNumber() != 0)
     {

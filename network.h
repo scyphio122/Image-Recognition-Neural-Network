@@ -4,8 +4,9 @@
 #include "layer.h"
 #include <QVector>
 
+class FileHandler;
 
-class Network
+class Network:  public FileHandler
 {
 private:
     uint8_t layersNumber;
@@ -18,8 +19,9 @@ public:
     void SetNeuronsNumber(uint8_t layerIndex, uint16_t number);
     uint8_t GetLayersNumber();
     void ClearAllNeuronsNumber();
-    void CreateNetwork();
-
+    bool CreateNetwork(bool weightsFromFileOrRandom);
+    void SaveNetwork(string directory);
+    bool LoadNetwork(string directory);
     void TestNetwork();
 };
 

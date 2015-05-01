@@ -1,6 +1,6 @@
 #include "network.h"
 #include <iostream>
-
+#include <QString>
 using namespace std;
 Network::Network()
 {
@@ -65,7 +65,7 @@ void Network::ClearAllNeuronsNumber()
 /**
  *@brief Network::CreateNetwork     -   This function is called in order to create the network, based on the loaded parameters
  */
-void Network::CreateNetwork()
+bool Network::CreateNetwork(bool weightsFromFileOrRandom)
 {
     //  Go from first to the last but one layer
     for(uint8_t index=0; index<layersNumber; index++)
@@ -85,8 +85,10 @@ void Network::CreateNetwork()
     for(uint8_t index = 0; index<(layersNumber-1); index++)
     {
         // ...and connect neurons between the adjascent two layers
-        layer[index].ConnectNeuronsBetweenLayers(&layer[index], &layer[index+1], CONNECTION_WEIGHT_RANDOM);
+        layer[index].ConnectNeuronsBetweenLayers(&layer[index], &layer[index+1], weightsFromFileOrRandom, this->loadFromFile);
     }
+
+    return true;
 }
 
 /**
@@ -95,25 +97,26 @@ void Network::CreateNetwork()
  */
 void Network::SaveNetwork(string directory)
 {
-    string dataToSave;
+    QString dataToSave;
     this->saveToFile = new ofstream;
 
     //  Open the file
     SetOfstream(directory, this->saveToFile);
 
     //  Save layers number
-    dataToSave = layersNumber;
-    SaveData(dataToSave);
+    dataToSave = QString::number(layersNumber);
+
+    SaveData(dataToSave.toStdString());
     //  Insert a new line for easier reading
-    SaveData("\n;");
+    SaveData("\n");
     //  Save neurons numbers
     for(uint8_t i=0; i<neuronsNumber.size(); i++)
     {
-        dataToSave = neuronsNumber[i];
-        SaveData(dataToSave);
+        dataToSave = QString::number(neuronsNumber[i]);
+        SaveData(dataToSave.toStdString());
     }
     //  Insert a new line for easier reading
-    SaveData("\n;");
+    SaveData("\n");
     //  Save connection's weights
     for(uint8_t layerIndex=0; layerIndex<(layer.size()-1); layerIndex++)
     {
@@ -122,16 +125,55 @@ void Network::SaveNetwork(string directory)
             for(uint16_t connectionIndex=0; connectionIndex<layer[layerIndex].GetNeuronAt(neuronIndex)->ConnectionsSize(); connectionIndex++)
             {
                 //  Get weight from specified connection
-                dataToSave = layer[layerIndex].GetNeuronAt(neuronIndex)->GetConnectionAt(connectionIndex)->GetWeight();
+                dataToSave = QString::number(layer[layerIndex].GetNeuronAt(neuronIndex)->GetConnectionAt(connectionIndex)->GetWeight());
                 //  Save connection's weight
-                SaveData(dataToSave);
+                SaveData(dataToSave.toStdString());
             }
             //  Insert a new line for easier reading
-            SaveData("\n;");
+            SaveData("\n");
         }
     }
+    this->saveToFile->flush();
+    this->saveToFile->close();
+    delete this->saveToFile;
 }
 
+bool Network::LoadNetwork(string directory)
+{
+    string data;
+    QString qdata;
+    this->loadFromFile = new ifstream;
+    //  Open the file
+    SetIfstream(directory, this->loadFromFile);
+    //  Load layersNumber
+    bool loadingOk = LoadData(data);
+    if(loadingOk == false)
+    {
+        return false;
+    }
+    qdata = QString::fromStdString(data);
+    this->layersNumber = qdata.toUInt();
+
+    this->neuronsNumber.resize(layersNumber);
+    //  Load Neurons number
+    for(int i=0; i<layersNumber; i++)
+    {
+        bool loadingOk = LoadData(data);
+        if(loadingOk == false)
+        {
+            return false;
+        }
+        qdata = QString::fromStdString(data);
+        this->neuronsNumber[i] = qdata.toUInt();
+    }
+    this->CreateNetwork(CONNECTION_WEIGHT_FROM_FILE);
+
+
+
+
+    delete this->loadFromFile;
+    return true;
+}
 
 
 void Network::TestNetwork()

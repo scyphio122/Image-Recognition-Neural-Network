@@ -67,8 +67,9 @@ void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
 
 void Create_Network::on_pB_Accept_clicked()
 {
-     this->network->CreateNetwork();
-    this->network->TestNetwork();
+     this->network->CreateNetwork(CONNECTION_WEIGHT_RANDOM);
+    //this->network->TestNetwork();
+    this->network->SaveNetwork("C:/Users/Konrad/Desktop/network.txt");
      this->close();
 }
 

@@ -11,7 +11,7 @@
 
 class Neuron;
 class CommonNeuron;
-class Connection:FileHandler
+class Connection: public FileHandler
 {
 private:
     double weight;

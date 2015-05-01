@@ -21,8 +21,8 @@ protected:
 public:
     FileHandler();
     ~FileHandler();
-    void SetOfstream(string directory, ofstream stream);
-    void SetIfstream(string directory, ifstream stream);
+    void SetOfstream(string directory, ofstream *stream);
+    bool SetIfstream(string directory, std::ifstream *stream);
     bool SaveData(string data);
     bool LoadData(string &data);
 };
