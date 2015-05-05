@@ -21,7 +21,8 @@ public:
     ~Layer();
     void SetLayerIndex(uint8_t number);
     void GetLayerIndex();
-    CommonNeuron *GetNeuronAt(uint16_t neuronIndex);
+    CommonNeuron* GetNeuronAt(uint16_t neuronIndex);
+    Bias* GetBias();
     void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile, std::ifstream *loadToFile);
     uint16_t GetNeuronsNumber();
 };

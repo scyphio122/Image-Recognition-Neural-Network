@@ -79,7 +79,6 @@ bool Network::CreateNetwork(bool weightsFromFileOrRandom)
             //  Enumerate the neurons in layer
             layer[index].GetNeuronAt(neuronIndex)->SetIndex(neuronIndex);
         }
-
     }
     //  Go through all of the layers but last one...
     for(uint8_t index = 0; index<(layersNumber-1); index++)
@@ -117,9 +116,19 @@ void Network::SaveNetwork(string directory)
     }
     //  Insert a new line for easier reading
     SaveData("\n");
-    //  Save connection's weights
+    //  Save connection's weights - from the first layer to the last but one (last layer's biasNeuron does not have connections!)
     for(uint8_t layerIndex=0; layerIndex<(layer.size()-1); layerIndex++)
     {
+        //  Save bias's weights
+        for(uint16_t connectionIndex=0; connectionIndex<layer[layerIndex].GetBias()->ConnectionsSize(); connectionIndex++)
+        {
+            //  Get weight from specified connection
+            dataToSave = QString::number(layer[layerIndex].GetBias()->GetConnectionAt(connectionIndex)->GetWeight());
+            //  Save connection's weight
+            SaveData(dataToSave.toStdString());
+        }
+
+        //  Save neuron's weights
         for(uint16_t neuronIndex=0; neuronIndex<layer[layerIndex].GetNeuronsNumber(); neuronIndex++)
         {
             for(uint16_t connectionIndex=0; connectionIndex<layer[layerIndex].GetNeuronAt(neuronIndex)->ConnectionsSize(); connectionIndex++)

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -45,5 +46,12 @@ void MainWindow::on_pB_BudujSiec_clicked()
         ui->pB_BudujSiec->setEnabled(false);
         ui->gB_TworzenieSieci->setEnabled(false);
     }
+
+}
+
+void MainWindow::on_pB_SaveNetwork_clicked()
+{
+    QFileDialog saveDialog;
+
 
 }
