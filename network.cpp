@@ -127,6 +127,8 @@ void Network::SaveNetwork(string directory)
             //  Save connection's weight
             SaveData(dataToSave.toStdString());
         }
+        //  Insert a new line for easier reading
+        SaveData("\n");
 
         //  Save neuron's weights
         for(uint16_t neuronIndex=0; neuronIndex<layer[layerIndex].GetNeuronsNumber(); neuronIndex++)

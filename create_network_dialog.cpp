@@ -69,7 +69,7 @@ void Create_Network::on_pB_Accept_clicked()
 {
      this->network->CreateNetwork(CONNECTION_WEIGHT_RANDOM);
     //this->network->TestNetwork();
-    this->network->SaveNetwork("C:/Users/Konrad/Desktop/network.txt");
+    //this->network->SaveNetwork("C:/Users/Konrad/Desktop/network.txt");
      this->close();
 }
 

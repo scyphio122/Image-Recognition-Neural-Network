@@ -52,6 +52,25 @@ void MainWindow::on_pB_BudujSiec_clicked()
 void MainWindow::on_pB_SaveNetwork_clicked()
 {
     QFileDialog saveDialog;
+    QStringList fileNames;
+
+    //  The ability to choose both existing and non-existing files
+    saveDialog.setFileMode(QFileDialog::AnyFile);
+    //  The AcceptButton is Save button
+    saveDialog.setAcceptMode(QFileDialog::AcceptSave);
+    //  Show only .txt files
+    saveDialog.setNameFilter("Network(*.txt)");
+    //  Show detailed description of files
+    saveDialog.setViewMode(QFileDialog::Detail);
+    //  Set directory to C:/Users/Konrad/Desktop/
+    saveDialog.setDirectory("C:/Users/Konrad/Desktop/");
+
+    //  Show the save window and get the filename
+    if (saveDialog.exec())
+        fileNames = saveDialog.selectedFiles();
+
+    //  Save the network
+    this->network.SaveNetwork(fileNames[0].toStdString());
 
 
 }

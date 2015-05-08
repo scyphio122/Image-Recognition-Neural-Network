@@ -22,8 +22,6 @@ private slots:
 
     void on_pB_BudujSiec_clicked();
 
-    void on_pushButton_clicked();
-
     void on_pB_SaveNetwork_clicked();
 
 private:
