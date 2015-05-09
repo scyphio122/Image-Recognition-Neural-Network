@@ -10,6 +10,7 @@ class CommonNeuron;
 class Neuron
 {
 protected:
+    double input;
     double output;
     QList<Connection> targetNeuronConnection;
 

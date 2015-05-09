@@ -5,8 +5,6 @@
 
 class Bias:public Neuron
 {
-private:
-    uint8_t input;
 public:
     Bias();
     ~Bias();

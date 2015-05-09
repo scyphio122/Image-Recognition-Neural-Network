@@ -10,7 +10,6 @@ class Layer;
 class CommonNeuron : public Neuron
 {
 private:
-    double input;
     QList<Connection*> sourceNeuronConnection;
     uint16_t index;
     void ClearSourceNeuronConnection();

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <QString>
 using namespace std;
+
+enum  TransportFunction_e transportFunction;
 Network::Network()
 {
     layersNumber = 0;

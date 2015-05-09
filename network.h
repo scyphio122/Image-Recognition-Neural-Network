@@ -5,6 +5,8 @@
 #include <QVector>
 
 class FileHandler;
+enum  TransportFunction_e  {UNIPOLAR_SIGMOID_FUNCTION, BIPOLAR_SIGMOID_FUNCTION, UNIPOLAR_THRESHOLD_FUNCTION, BIPOLAR_THRESHOLD_FUNCTION};
+extern TransportFunction_e transportFunction;
 
 class Network:  public FileHandler
 {
