@@ -107,7 +107,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Buduj sieć</string>
+      <string>Wczytaj/Buduj sieć</string>
      </property>
     </widget>
    </widget>

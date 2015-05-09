@@ -25,6 +25,7 @@ public:
     Bias* GetBias();
     void ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool connectionWeightRandom_Or_FromFile, std::ifstream *loadToFile);
     uint16_t GetNeuronsNumber();
+    bool TestLayersConnections(Layer* thisLayer, Layer* previousLayer);
 };
 
 #endif // LAYER_H

@@ -44,3 +44,13 @@ uint16_t CommonNeuron::GetIndex()
 {
     return this->index;
 }
+
+uint16_t CommonNeuron::SourceConnectionsSize()
+{
+    return this->sourceNeuronConnection.size();
+}
+
+Connection* CommonNeuron::GetSourceConnectionAt(uint32_t connectionIndex)
+{
+    return this->sourceNeuronConnection[connectionIndex];
+}

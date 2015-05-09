@@ -86,7 +86,7 @@ bool Network::CreateNetwork(bool weightsFromFileOrRandom)
         // ...and connect neurons between the adjascent two layers
         layer[index].ConnectNeuronsBetweenLayers(&layer[index], &layer[index+1], weightsFromFileOrRandom, this->loadFromFile);
     }
-
+    TestConnections();
     return true;
 }
 
@@ -215,6 +215,22 @@ void Network::TestNetwork()
             cout<<"#######################################"<<endl;
 
         }
+    }
+
+}
+
+void Network::TestConnections()
+{
+    for(uint8_t layerIndex = 1; layerIndex <this->layersNumber; layerIndex++)
+    {
+        if( layerIndex == 8 || layerIndex == 9)
+        {
+
+        }
+        if(this->layer[layerIndex].TestLayersConnections(&layer[layerIndex], &layer[layerIndex-1]) == true)
+            cout<<"Polaczenia pomiedzy "<<(layerIndex-1)<<" i "<<layerIndex+0<<" sa ok"<<endl;
+        else
+            cout<<"Polaczenia pomiedzy "<<(layerIndex-1)<<" i "<<layerIndex+0<<" jest zle"<<endl;
     }
 
 }

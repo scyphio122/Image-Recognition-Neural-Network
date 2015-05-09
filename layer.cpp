@@ -37,9 +37,12 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
 {
     Connection con;
 
+    //  Allocate Memory in advance for connections in biasNeuron
+    this->GetBias()->AllocateMemoryForConnectionsList(nextLayer->GetNeuronsNumber());
     //  Connect bias
     for(uint16_t j=0; j<nextLayer->neuron.size(); j++)
     {
+
         if(connectionWeightRandom_Or_FromFile == CONNECTION_WEIGHT_RANDOM)
             con.RandomizeWeight();
         else
@@ -50,12 +53,10 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
             QString qdata = QString::fromStdString(data);
             con.SetWeight(qdata.toDouble());
         }
-
-
         //  Set the address of the connection to the output neuron in next layer
         con.SetNeuronAddress(nextLayer->GetNeuronAt(j));
         //  Create the forward connection
-        thisLayer->biasNeuron.CreateTargetNeuronConnection(&con);
+        thisLayer->biasNeuron.CreateTargetNeuronConnection(con);
         //  Create the backward connection
         nextLayer->neuron[j].CreateSourceNeuronConnection(thisLayer->biasNeuron.GetConnectionAt(j));
     }
@@ -63,6 +64,8 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
     //  Go through the neurons in this layer
     for(uint16_t i=0; i<thisLayer->neuron.size(); i++)
     {
+        //  Allocate memory for ConnectionsList for each neuron
+        this->GetNeuronAt(i)->AllocateMemoryForConnectionsList(nextLayer->GetNeuronsNumber());
         //  And for each neuron in this layer go through neurons in the next layer
         for(uint16_t j=0; j<nextLayer->neuron.size(); j++)
         {
@@ -81,7 +84,7 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
             //  Set the address of the connection to the output neuron in next layer
             con.SetNeuronAddress(nextLayer->GetNeuronAt(j));
             //  Create the forward connection
-            thisLayer->neuron[i].CreateTargetNeuronConnection(&con);
+            thisLayer->neuron[i].CreateTargetNeuronConnection(con);
             //  Create the backward connection
             nextLayer->neuron[j].CreateSourceNeuronConnection(thisLayer->neuron[i].GetConnectionAt(j));
         }
@@ -117,4 +120,25 @@ Bias* Layer::GetBias()
 uint16_t Layer::GetNeuronsNumber()
 {
     return this->neuron.size();
+}
+
+bool Layer::TestLayersConnections(Layer* thisLayer, Layer* previousLayer)
+{
+    for(uint16_t neuronIndex=0; neuronIndex<thisLayer->GetNeuronsNumber(); neuronIndex++)
+    {
+        for(uint16_t connectionIndex=0; connectionIndex<thisLayer->GetNeuronAt(neuronIndex)->SourceConnectionsSize(); connectionIndex++)
+        {
+            if(connectionIndex == 0)
+            {
+                if(previousLayer->GetBias()->GetConnectionAt(neuronIndex)->GetWeight() != thisLayer->GetNeuronAt(neuronIndex)->GetSourceConnectionAt(connectionIndex)->GetWeight())
+                    return false;
+            }
+            else
+            {
+                if(previousLayer->GetNeuronAt(connectionIndex-1)->GetConnectionAt(neuronIndex)->GetWeight() != thisLayer->GetNeuronAt(neuronIndex)->GetSourceConnectionAt(connectionIndex)->GetWeight())
+                    return false;
+            }
+        }
+    }
+    return true;
 }

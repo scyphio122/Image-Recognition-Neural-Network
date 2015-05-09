@@ -24,6 +24,8 @@ public:
     void ConnectNeuronsFromPreviousLayer(Layer* previousLayer);
     void CreateSourceNeuronConnection(Connection* connection);
     void ClearConnections();
+    uint16_t SourceConnectionsSize();
+    Connection* GetSourceConnectionAt(uint32_t connectionIndex);
 };
 
 #endif // COMMONNEURON_H

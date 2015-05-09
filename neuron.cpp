@@ -20,9 +20,9 @@ void Neuron::ClearOutput()
      this->output = 0;
 }
 
-void Neuron::CreateTargetNeuronConnection(Connection *connection)
+void Neuron::CreateTargetNeuronConnection(Connection connection)
 {
-    this->targetNeuronConnection.push_back(*connection);
+    this->targetNeuronConnection.append(connection);
 }
 
 void Neuron::ClearTargetNeuronConnection()
@@ -40,6 +40,10 @@ uint16_t Neuron::ConnectionsSize()
 Connection* Neuron::GetConnectionAt(uint16_t index)
 {
     return &(this->targetNeuronConnection[index]);
+}
+void Neuron::AllocateMemoryForConnectionsList(uint16_t connectionsNumber)
+{
+    this->targetNeuronConnection.reserve(connectionsNumber);
 }
 
 /*void Neuron::ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile)

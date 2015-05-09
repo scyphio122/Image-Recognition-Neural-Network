@@ -23,6 +23,7 @@ public:
     void SaveNetwork(string directory);
     bool LoadNetwork(string directory);
     void TestNetwork();
+    void TestConnections();
 };
 
 #endif // NETWORK_H

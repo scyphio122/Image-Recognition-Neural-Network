@@ -1,6 +1,6 @@
 #include "connection.h"
 #include <cstdlib>
-
+#include <QList>
 Connection::Connection()
 {
     RandomizeWeight();
@@ -29,3 +29,5 @@ void Connection::SetWeight(double weightToSet)
 {
     this->weight = weightToSet;
 }
+
+

@@ -1,7 +1,7 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-#include <QVector>
+#include <QList>
 #include "connection.h"
 #include <stdint-gcc.h>
 
@@ -11,7 +11,9 @@ class Neuron
 {
 protected:
     double output;
-    QVector<Connection> targetNeuronConnection;
+    QList<Connection> targetNeuronConnection;
+
+
 
 public:
     Neuron();
@@ -21,9 +23,10 @@ public:
     Connection* GetConnectionAt(uint16_t index);
     void ClearConnection();
     void ClearOutput();
-    void CreateTargetNeuronConnection(Connection *connection);
+    void CreateTargetNeuronConnection(Connection connection);
     void ClearTargetNeuronConnection();
     void ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
+    void AllocateMemoryForConnectionsList(uint16_t connectionsNumber);
 
     uint16_t ConnectionsSize();
 };
