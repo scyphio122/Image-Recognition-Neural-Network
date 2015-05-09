@@ -29,6 +29,7 @@ public:
     void AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber);
 
     uint16_t ConnectionsSize();
+
 };
 
 #endif // NEURON_H

@@ -23,6 +23,7 @@ public:
     void SetWeight(double weightToSet);
     void SetNeuronAddress(Neuron *targetNeuron);
     double GetWeight();
+    Neuron* GetConnectedNeuron();
 
 
 

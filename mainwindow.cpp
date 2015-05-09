@@ -34,8 +34,6 @@ void MainWindow::on_pB_UsunSiec_pressed()
     ui->pB_UsunSiec->setEnabled(false);
 }
 
-
-
 void MainWindow::on_pB_BudujSiec_clicked()
 {
     if(ui->rB_StworzSiecRecznie->isChecked())

@@ -1,6 +1,7 @@
 #include "connection.h"
 #include <cstdlib>
 #include <QList>
+#include "neuron.h"
 Connection::Connection()
 {
     RandomizeWeight();
@@ -28,6 +29,11 @@ double Connection::GetWeight()
 void Connection::SetWeight(double weightToSet)
 {
     this->weight = weightToSet;
+}
+
+Neuron* Connection::GetConnectedNeuron()
+{
+    return (this->targetNeuron);
 }
 
 
