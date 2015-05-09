@@ -26,6 +26,7 @@ void MainWindow::DisplayWarning(string text)
 
 void MainWindow::on_pB_UsunSiec_pressed()
 {
+    this->network.DeleteNetwork();
     network.ClearAllNeuronsNumber();
     network.SetLayersNumber(0);
     ui->gB_TworzenieSieci->setEnabled(true);

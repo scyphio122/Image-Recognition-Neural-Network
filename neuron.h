@@ -26,7 +26,7 @@ public:
     void CreateTargetNeuronConnection(Connection connection);
     void ClearTargetNeuronConnection();
     void ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
-    void AllocateMemoryForConnectionsList(uint16_t connectionsNumber);
+    void AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber);
 
     uint16_t ConnectionsSize();
 };

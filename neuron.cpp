@@ -41,7 +41,7 @@ Connection* Neuron::GetConnectionAt(uint16_t index)
 {
     return &(this->targetNeuronConnection[index]);
 }
-void Neuron::AllocateMemoryForConnectionsList(uint16_t connectionsNumber)
+void Neuron::AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber)
 {
     this->targetNeuronConnection.reserve(connectionsNumber);
 }

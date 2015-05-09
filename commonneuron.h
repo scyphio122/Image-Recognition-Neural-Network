@@ -1,7 +1,7 @@
 #ifndef COMMONNEURON_H
 #define COMMONNEURON_H
 #include "neuron.h"
-#include <QVector>
+#include <QList>
 #include <stdint.h>
 #include "layer.h"
 
@@ -11,7 +11,7 @@ class CommonNeuron : public Neuron
 {
 private:
     double input;
-    QVector<Connection*> sourceNeuronConnection;
+    QList<Connection*> sourceNeuronConnection;
     uint16_t index;
     void ClearSourceNeuronConnection();
 public:
@@ -25,7 +25,9 @@ public:
     void CreateSourceNeuronConnection(Connection* connection);
     void ClearConnections();
     uint16_t SourceConnectionsSize();
-    Connection* GetSourceConnectionAt(uint32_t connectionIndex);
+    Connection* GetSourceConnectionAt(uint16_t connectionIndex);
+    void AllocateMemoryForSourceConnectionList(uint16_t connectionsNumber);
+    bool SourceNeuronConnectionEmpty();
 };
 
 #endif // COMMONNEURON_H

@@ -24,6 +24,7 @@ public:
     bool LoadNetwork(string directory);
     void TestNetwork();
     void TestConnections();
+    void DeleteNetwork();
 };
 
 #endif // NETWORK_H

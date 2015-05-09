@@ -14,8 +14,14 @@ Layer::Layer(uint8_t index, uint16_t neuronsNumber)
 
 Layer::~Layer()
 {
-
+    ClearNeurons();
 }
+
+void Layer::ClearNeurons()
+{
+    this->neuron.clear();
+}
+
 /**
  * @brief Layer::SetLayerIndex  -   This function is called in the Layer constructor. It is used to set the layers index.   The layers are numbered from zero. The max layer index is 255.
  *
@@ -38,11 +44,15 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
     Connection con;
 
     //  Allocate Memory in advance for connections in biasNeuron
-    this->GetBias()->AllocateMemoryForConnectionsList(nextLayer->GetNeuronsNumber());
-    //  Connect bias
+    this->GetBias()->AllocateMemoryForTargetConnectionsList(nextLayer->GetNeuronsNumber());
+    //  Connect bias with all neurons in the nextLayer
     for(uint16_t j=0; j<nextLayer->neuron.size(); j++)
     {
-
+        //  For each neuron in the nextLayer, if sourceNeuronConnection is empty, then allocate necessary memory for the sourceConnections
+        if(nextLayer->GetNeuronAt(j)->SourceNeuronConnectionEmpty())
+        {
+            nextLayer->GetNeuronAt(j)->AllocateMemoryForSourceConnectionList(this->GetNeuronsNumber()+1);
+        }
         if(connectionWeightRandom_Or_FromFile == CONNECTION_WEIGHT_RANDOM)
             con.RandomizeWeight();
         else
@@ -65,11 +75,12 @@ void Layer::ConnectNeuronsBetweenLayers(Layer *thisLayer, Layer *nextLayer, bool
     for(uint16_t i=0; i<thisLayer->neuron.size(); i++)
     {
         //  Allocate memory for ConnectionsList for each neuron
-        this->GetNeuronAt(i)->AllocateMemoryForConnectionsList(nextLayer->GetNeuronsNumber());
+        this->GetNeuronAt(i)->AllocateMemoryForTargetConnectionsList(nextLayer->GetNeuronsNumber());
         //  And for each neuron in this layer go through neurons in the next layer
         for(uint16_t j=0; j<nextLayer->neuron.size(); j++)
         {
-            if(connectionWeightRandom_Or_FromFile == CONNECTION_WEIGHT_RANDOM)
+
+           if(connectionWeightRandom_Or_FromFile == CONNECTION_WEIGHT_RANDOM)
                 con.RandomizeWeight();
             else
             {

@@ -5,7 +5,7 @@
 #include "commonneuron.h"
 #include <stdint.h>
 #include <string>
-
+#include <QVector>
 
 //class CommonNeuron;
 
@@ -15,6 +15,8 @@ private:
     uint8_t index;
     QVector<CommonNeuron> neuron;
     Bias biasNeuron;
+
+    void ClearNeurons();
 public:
     Layer();
     Layer(uint8_t index, uint16_t neuronsNumber);

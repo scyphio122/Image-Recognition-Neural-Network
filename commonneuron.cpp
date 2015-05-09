@@ -19,7 +19,7 @@ void CommonNeuron::ConnectNeuronsFromPreviousLayer(Layer* previousLayer)
 
 void CommonNeuron::CreateSourceNeuronConnection(Connection* connection)
 {
-    this->sourceNeuronConnection.push_back(connection);
+    this->sourceNeuronConnection.append(connection);
 
 }
 void CommonNeuron::ClearSourceNeuronConnection()
@@ -50,7 +50,17 @@ uint16_t CommonNeuron::SourceConnectionsSize()
     return this->sourceNeuronConnection.size();
 }
 
-Connection* CommonNeuron::GetSourceConnectionAt(uint32_t connectionIndex)
+Connection* CommonNeuron::GetSourceConnectionAt(uint16_t connectionIndex)
 {
     return this->sourceNeuronConnection[connectionIndex];
+}
+
+void CommonNeuron::AllocateMemoryForSourceConnectionList(uint16_t connectionsNumber)
+{
+    this->sourceNeuronConnection.reserve(connectionsNumber);
+}
+
+bool CommonNeuron::SourceNeuronConnectionEmpty()
+{
+    return this->sourceNeuronConnection.isEmpty();
 }

@@ -10,7 +10,12 @@ Network::Network()
 
 Network::~Network()
 {
+    DeleteNetwork();
+}
 
+void Network::DeleteNetwork()
+{
+    this->layer.clear();
 }
 
 /**
