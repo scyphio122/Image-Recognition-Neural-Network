@@ -2,8 +2,8 @@
 #define TEACHER_H
 
 #include <stdint-gcc.h>
+#include <QVector>
 
-#define DIFFERENTIAL
 
 class Network;
 class Neuron;
@@ -23,7 +23,7 @@ private:
     double      entireNetworkError;
     Network*    network;
 
-    double      expectedOutput;
+    QVector <double>      expectedOutput;
     //Image*      image;
 
     double        CalculateNeuronsError(Neuron*   neuron);

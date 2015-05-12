@@ -241,3 +241,13 @@ void Network::TestConnections()
     }
 
 }
+
+Layer* Network::GetLayerAt(uint8_t layerIndex)
+{
+    return &this->layer[layerIndex];
+}
+
+uint16_t    Network::GetNeuronsNumber(uint8_t layerIndex)
+{
+    return this->neuronsNumber[layerIndex];
+}

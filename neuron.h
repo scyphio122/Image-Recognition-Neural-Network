@@ -5,6 +5,17 @@
 #include "connection.h"
 #include <stdint-gcc.h>
 
+#define     BIPOLAR_SIGMOID_FUNCTION
+
+#ifdef  BIPOLAR_SIGMOID_FUNCTION
+        #undef  UNIPOLAR_SIGMOID_FUNCTION
+        #define TRANSFER_FUNCTION_DIFFERENTIAL(beta, x)  (2*beta*exp(beta*x))/((exp(beta*x)+1)*(exp(beta*x)+1))
+#endif
+
+#ifdef UNIPOLAR_SIGMOID_FUNCTION
+    #undef  BIPOLAR_SIGMOID_FUNCTION
+    #define TRANSFER_FUNCTION_DIFFERENTIAL(beta, x)  (beta*exp(beta*x))/((exp(beta*x)+1)*(exp(beta*x)+1))
+#endif
 class Connection;
 class CommonNeuron;
 class Neuron

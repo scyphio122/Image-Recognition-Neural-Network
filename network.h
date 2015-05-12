@@ -17,16 +17,17 @@ private:
 public:
     Network();
     ~Network();
-    void SetLayersNumber(uint8_t number);
-    void SetNeuronsNumber(uint8_t layerIndex, uint16_t number);
-    uint8_t GetLayersNumber();
-    void ClearAllNeuronsNumber();
-    bool CreateNetwork(bool weightsFromFileOrRandom);
-    void SaveNetwork(string directory);
-    bool LoadNetwork(string directory);
-    void TestNetwork();
-    void TestConnections();
-    void DeleteNetwork();
+    void        SetLayersNumber(uint8_t number);
+    void        SetNeuronsNumber(uint8_t layerIndex, uint16_t number);
+    uint8_t     GetLayersNumber();
+    void        ClearAllNeuronsNumber();
+    bool        CreateNetwork(bool weightsFromFileOrRandom);
+    void        SaveNetwork(string directory);
+    bool        LoadNetwork(string directory);
+    void        TestNetwork();
+    void        TestConnections();
+    void        DeleteNetwork();
+    Layer*      GetLayerAt(uint8_t layerIndex);
 };
 
 #endif // NETWORK_H

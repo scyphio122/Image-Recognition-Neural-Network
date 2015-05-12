@@ -63,32 +63,14 @@ void Neuron::AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber)
 void Neuron::CalculateOutput()
 {
     static double x = this->input;
-    switch(transportFunction)
-    {
-    case    BIPOLAR_SIGMOID_FUNCTION:
-        this->output = 2/(1 + exp(-beta*x)) - 1;
-        break;
 
-    case    UNIPOLAR_SIGMOID_FUNCTION:
+#ifdef    BIPOLAR_SIGMOID_FUNCTION
+        this->output = 2/(1 + exp(-beta*x)) - 1;
+ #endif
+#ifdef  UNIPOLAR_SIGMOID_FUNCTION
         this->output = 1/(1 + exp(-beta*x));
-        break;
+#endif
 
-    case UNIPOLAR_THRESHOLD_FUNCTION:
-        if(x < 0)
-            this->output = 0;
-        else
-            this->output = 1;
-        break;
-    case BIPOLAR_THRESHOLD_FUNCTION:
-        if(x <0)
-            this->output = -1;
-        else
-            this->output = 1;
-        break;
-    default:    //  If error - get bipolar sigmoid
-        this->output = 2/(1 + exp(-beta*x)) - 1;
-        break;
-    }
     return;
 }
 
