@@ -92,4 +92,17 @@ void Neuron::CalculateOutput()
     return;
 }
 
+double Neuron::GetInput()
+{
+    return this->input;
+}
+double Neuron::GetOutputDifferential()
+{
+    return this->outputDifferential;
+}
+
+void Neuron::SetOutputDifferential(double value)
+{
+    this->outputDifferential = value;
+}
 

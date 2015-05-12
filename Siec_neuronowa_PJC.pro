@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     connection.cpp \
     filehandler.cpp \
     network.cpp \
-    create_network_dialog.cpp
+    create_network_dialog.cpp \
+    teacher.cpp
 
 HEADERS  += mainwindow.h \
     layer.h \
@@ -31,7 +32,8 @@ HEADERS  += mainwindow.h \
     connection.h \
     filehandler.h \
     network.h \
-    create_network_dialog.h
+    create_network_dialog.h \
+    teacher.h
 
 FORMS    += mainwindow.ui \
     create_network.ui

@@ -3,8 +3,8 @@
 //#include "neuron.h"
 #include "filehandler.h"
 
-#define MIN_WEIGHT (double)(-50)
-#define MAX_WEIGHT (double)(50)
+#define MIN_WEIGHT (double)(-1)
+#define MAX_WEIGHT (double)(1)
 #define CONNECTION_WEIGHT_RANDOM    true
 #define CONNECTION_WEIGHT_FROM_FILE false
 

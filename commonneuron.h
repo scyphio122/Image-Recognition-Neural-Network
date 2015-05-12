@@ -12,7 +12,9 @@ class CommonNeuron : public Neuron
 private:
     QList<Connection*> sourceNeuronConnection;
     uint16_t index;
+
     void ClearSourceNeuronConnection();
+
 public:
     CommonNeuron();
     ~CommonNeuron();
@@ -27,6 +29,8 @@ public:
     Connection* GetSourceConnectionAt(uint16_t connectionIndex);
     void AllocateMemoryForSourceConnectionList(uint16_t connectionsNumber);
     bool SourceNeuronConnectionEmpty();
+
+
 };
 
 #endif // COMMONNEURON_H

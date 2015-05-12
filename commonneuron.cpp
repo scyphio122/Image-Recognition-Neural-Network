@@ -125,3 +125,5 @@ void CommonNeuron::LoadInput()
         }
     }
 }
+
+

@@ -12,6 +12,7 @@ class Neuron
 protected:
     double input;
     double output;
+    double outputDifferential;
     QList<Connection> targetNeuronConnection;
 
 
@@ -19,17 +20,19 @@ protected:
 public:
     Neuron();
     ~Neuron();
-    void CalculateOutput();
-    double GetOutput();
+    void        CalculateOutput();
+    double      GetOutput();
     Connection* GetConnectionAt(uint16_t index);
-    void ClearConnection();
-    void ClearOutput();
-    void CreateTargetNeuronConnection(Connection connection);
-    void ClearTargetNeuronConnection();
-    void ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
-    void AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber);
-
-    uint16_t ConnectionsSize();
+    void        ClearConnection();
+    void        ClearOutput();
+    void        CreateTargetNeuronConnection(Connection connection);
+    void        ClearTargetNeuronConnection();
+    void        ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
+    void        AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber);
+    double      GetOutputDifferential();
+    void        SetOutputDifferential(double value);
+    double      GetInput();
+    uint16_t    ConnectionsSize();
 
 };
 
