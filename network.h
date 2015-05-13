@@ -5,7 +5,7 @@
 #include <QVector>
 
 class FileHandler;
-enum  TransportFunction_e  {UNIPOLAR_SIGMOID_FUNCTION, BIPOLAR_SIGMOID_FUNCTION, UNIPOLAR_THRESHOLD_FUNCTION, BIPOLAR_THRESHOLD_FUNCTION};
+enum  TransportFunction_e  {UNIPOLAR_SIGMOID_FUNCTION, BIPOLAR_SIGMOID_FUNCTION};
 extern TransportFunction_e transportFunction;
 
 class Network:  public FileHandler
@@ -24,10 +24,13 @@ public:
     bool        CreateNetwork(bool weightsFromFileOrRandom);
     void        SaveNetwork(string directory);
     bool        LoadNetwork(string directory);
+    bool        LoadNetworkInput(QVector <double> inputExample);
     void        TestNetwork();
     void        TestConnections();
     void        DeleteNetwork();
     Layer*      GetLayerAt(uint8_t layerIndex);
+    uint16_t    GetNeuronsNumber(uint8_t layerIndex);
+    void        CalculateNetworkAnswer();
 };
 
 #endif // NETWORK_H

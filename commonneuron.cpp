@@ -105,9 +105,9 @@ bool CommonNeuron::SourceNeuronConnectionEmpty()
 }
 
 /**
- * @brief CommonNeuron::LoadInput   -   This function sets the input's value to zero, calculates the combinations of weights and output for each neuron from the previous layer, calculates the sum of them and saves it in the input of the neuron, which called this method. If the calling neuron is in the first (input) layer, it loads directly the value to the input
+ * @brief CommonNeuron::LoadInput_MiddleLayer   -   This function sets the input's value to zero, calculates the combinations of weights and output for each neuron from the previous layer, calculates the sum of them and saves it in the input of the neuron, which called this method.
  */
-void CommonNeuron::LoadInput()
+void CommonNeuron::LoadInput_MiddleLayer()
 {
     //  Clear input of the CommonNeuron
     ClearInput();
@@ -126,4 +126,12 @@ void CommonNeuron::LoadInput()
     }
 }
 
+/**
+ * @brief CommonNeuron::LoadInput_InputLayer    -   This function is called in order to load an example to recognize to the input neurons of the network
+ * @param input -   The single parameter which will be loaded in the single neuron
+ */
+void CommonNeuron::LoadInput_InputLayer(double input)
+{
+    this->input = input;
+}
 

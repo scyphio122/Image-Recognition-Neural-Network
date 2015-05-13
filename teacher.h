@@ -11,7 +11,7 @@ class Connection;
 class Bias;
 class CommonNeuron;
 class Layer;
-
+class FileHandler;
 class Teacher
 {
 private:
@@ -38,15 +38,19 @@ public:
     double      GetEta();
     double      GetEntireNetworkError();
     double      GetQualificationThreshold();
-    double      CalculateWeightDifferential(Neuron* neuron);
     void        SetAlpha(double alpha);
     void        SetEta(double eta);
     void        SetTeachingCycleCounter(uint32_t    teachingCycleCounterToSet);
     void        SetQualificationError(double qualificationThhresholdToSet);
     void        SetOutputError(Neuron *outputNeuron);
     void        CalculateLastNeuronError(CommonNeuron *outputNeuron);
-    void        CalculateOutputDifferential(Neuron* thisNeuron, Layer* nextLayer);
+    void        CalculateCommonNeuronError(Neuron* thisNeuron);
+    void        CalculateEntireNetworkError();
+    void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
+    QVector <double>    RandomizeTeachingExample(QVector <double> *exampleTable);
+    void        BackPropagationAlgorithm();
+
 
 };
 

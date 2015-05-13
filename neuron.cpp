@@ -3,7 +3,7 @@
 #include <cmath>
 extern enum TransportFunction_e transportFunction;
 
-const double beta = 0.6;
+extern const double beta;
 
 Neuron::Neuron()
 {
@@ -78,13 +78,13 @@ double Neuron::GetInput()
 {
     return this->input;
 }
-double Neuron::GetOutputDifferential()
+double Neuron::GetNeuronError()
 {
-    return this->outputDifferential;
+    return this->neuronError;
 }
 
-void Neuron::SetOutputDifferential(double value)
+void Neuron::SetNeuronError(double value)
 {
-    this->outputDifferential = value;
+    this->neuronError = value;
 }
 

@@ -14,7 +14,9 @@ Network::~Network()
 {
     DeleteNetwork();
 }
-
+/**
+ * @brief Network::DeleteNetwork    -   This function is cslled in order to destroy already created network
+ */
 void Network::DeleteNetwork()
 {
     this->layer.clear();
@@ -156,6 +158,11 @@ void Network::SaveNetwork(string directory)
     delete this->saveToFile;
 }
 
+/**
+ * @brief Network::LoadNetwork  -   This function is called when the user specifies to load the existing network from file
+ * @param directory -   The directory to the existing network
+ * @return true if loading was successful; false if error eccured
+ */
 bool Network::LoadNetwork(string directory)
 {
     string data;
@@ -226,6 +233,7 @@ void Network::TestNetwork()
 
 }
 
+
 void Network::TestConnections()
 {
     for(uint8_t layerIndex = 1; layerIndex <this->layersNumber; layerIndex++)
@@ -242,12 +250,67 @@ void Network::TestConnections()
 
 }
 
+/**
+ * @brief Network::GetLayerAt   -   This function returns a pointer to the requested layer in the network
+ * @param layerIndex    -   The requested layer index
+ * @return  Pointer to the requested layer
+ */
 Layer* Network::GetLayerAt(uint8_t layerIndex)
 {
     return &this->layer[layerIndex];
 }
 
+/**
+ * @brief Network::GetNeuronsNumber -   This function is called to get the neurons number in the specified layer
+ * @param layerIndex    -   Index of the layer that neurons number is requested
+ * @return Neurons number in the layer
+ */
 uint16_t    Network::GetNeuronsNumber(uint8_t layerIndex)
 {
     return this->neuronsNumber[layerIndex];
+}
+/**
+ * @brief Network::LoadNetworkInput -   This function is called in order to assign previously loaded QVector of learning params to the neurons in the inputLayer.
+ * @param inputExample  -   The QVector which contains params to recognise
+ * @return  -   true if loading was successful; false when inputExample size and neurons number in the input layer did not match.
+ */
+bool Network::LoadNetworkInput(QVector <double> inputExample)
+{
+    if(inputExample.size() != this->GetLayerAt(0)->GetNeuronsNumber())
+        return false;
+
+    for(uint16_t neuronIndex=0; neuronIndex <this->GetLayerAt(0)->GetNeuronsNumber(); neuronIndex++)
+    {
+        this->GetLayerAt(0)->GetNeuronAt(neuronIndex)->LoadInput_InputLayer(inputExample[neuronIndex]);
+    }
+    return true;
+}
+
+/**
+ * @brief Network::CalculateNetworkAnswer   -   This function is called to propagate the input data through the network and calculate the network's answer.
+ *                                              NOTE:   It MUST be called AFTER loading data in the input layer's neurons
+ */
+void Network::CalculateNetworkAnswer()
+{
+    for(uint8_t layerIndex=0; layerIndex<this->layersNumber; layerIndex++)
+    {
+        //  For each layer, calculate its biasNeuron output
+        this->GetLayerAt(layerIndex)->GetBias()->CalculateOutput();
+        for(uint16_t neuronIndex=0;neuronIndex<this->GetNeuronsNumber(layerIndex); layerIndex++)
+        {
+            //  If it is the first layer, the input should be already loaded
+            if(layerIndex == 0)
+            {
+                //  Calculate input layer neurons output
+                this->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->CalculateOutput();
+            }
+            else
+            {
+                //  Else, if it is any other layer, then load an input to the neuron first
+                this->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->LoadInput_MiddleLayer();
+                //  And then calculate its output
+                this->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->CalculateOutput();
+            }
+        }
+    }
 }

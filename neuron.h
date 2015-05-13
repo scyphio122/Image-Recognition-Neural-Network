@@ -16,6 +16,9 @@
     #undef  BIPOLAR_SIGMOID_FUNCTION
     #define TRANSFER_FUNCTION_DIFFERENTIAL(beta, x)  (beta*exp(beta*x))/((exp(beta*x)+1)*(exp(beta*x)+1))
 #endif
+
+const double beta = 0.6;
+
 class Connection;
 class CommonNeuron;
 class Neuron
@@ -23,7 +26,7 @@ class Neuron
 protected:
     double input;
     double output;
-    double outputDifferential;
+    double neuronError;
     QList<Connection> targetNeuronConnection;
 
 
@@ -40,8 +43,8 @@ public:
     void        ClearTargetNeuronConnection();
     void        ConnectNeuron(CommonNeuron *neuronToConnect, bool connectionWeightRandom_Or_FromFile);
     void        AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber);
-    double      GetOutputDifferential();
-    void        SetOutputDifferential(double value);
+    double      GetNeuronError();
+    void        SetNeuronError(double value);
     double      GetInput();
     uint16_t    ConnectionsSize();
 

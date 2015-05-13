@@ -3,6 +3,8 @@
 #include "neuron.h"
 #include "layer.h"
 #include "network.h"
+extern const double beta;
+
 Teacher::Teacher()
 {
     //  Create the expectedOutput vector
@@ -15,40 +17,44 @@ Teacher::~Teacher()
     this->expectedOutput.clear();
 }
 
-
-
-/*double Teacher::CalculateWeight(Connection *connection)
+/**
+ * @brief Teacher::GetEta   -   This function is used to get the value of eta - the coefficient which configures the teaching speed
+ * @return eta coefficienr
+ */
+double Teacher::GetEta()
 {
-    return (connection->GetWeight() - alpha*DIFFERENTIAL);
-}*/
+    return this->eta;
+}
+
+
+
 
 void Teacher::CalculateLastNeuronError(CommonNeuron *outputNeuron)
 {
-    outputNeuron->SetOutputDifferential(outputNeuron->GetOutput() - expectedOutput);
+    double error = (expectedOutput[outputNeuron->GetIndex()] - outputNeuron->GetOutput())*TRANSFER_FUNCTION_DIFFERENTIAL(beta, outputNeuron->GetInput());
+    outputNeuron->SetNeuronError(error);
 }
 
-void Teacher::CalculateOutputDifferential(Neuron* thisNeuron, Layer* nextLayer)
+void Teacher::CalculateCommonNeuronError(Neuron* thisNeuron)
 {
     double sum = 0;
-    CommonNeuron *neuron;
-    for(uint16_t i=0; i<nextLayer->GetNeuronsNumber(); i++)
+    for(uint16_t i=0; i<thisNeuron->ConnectionsSize(); i++)
     {
-        neuron = nextLayer->GetNeuronAt(i);
-        sum += neuron->GetOutputDifferential()*neuron->GetOutput()*(1-neuron->GetOutput())*thisNeuron->GetConnectionAt(i)->GetWeight();
+        sum += thisNeuron->GetConnectionAt(i)->GetConnectedNeuron()->GetNeuronError()*thisNeuron->GetConnectionAt(i)->GetWeight();
     }
-    thisNeuron->SetOutputDifferential(sum);
+    sum = sum*TRANSFER_FUNCTION_DIFFERENTIAL(beta, thisNeuron->GetInput());
+    thisNeuron->SetNeuronError(sum);
 }
 
 
-double Teacher::CalculateWeightDifferential(Neuron* neuron)
+void Teacher::ChangeWeight(Connection* connection, Neuron* sourceNeuron)
 {
-    return neuron->GetOutput()*(1-neuron->GetOutput())*neuron->GetInput();
+    double weightChange =  this->GetEta()*connection->GetConnectedNeuron()->GetNeuronError()*sourceNeuron->GetOutput();
+    double connectionWeight = connection->GetWeight();
+    connection->SetWeight(connectionWeight+weightChange);
 }
 
-double Teacher::CalculateWeight(Connection *connection)
-{
-    //return  connection->GetWeight() - this->alpha*
-}
+
 
 void Teacher::CalculateEntireNetworkError()
 {
@@ -60,3 +66,64 @@ void Teacher::CalculateEntireNetworkError()
    }
    entireNetworkError = 0.5*sumOfErrors;
 }
+
+/**
+ * @brief Teacher::RandomizeTeachingExample -   This function should be called from the teaching algorithm. Its purpose is to randomize the example which will be loaded in the network.
+ * @param exampleTable  -   The pointer to the table containing all the known examples to be taught
+ * @return  The pointer to the randomized example
+ */
+QVector <double> Teacher::RandomizeTeachingExample(QVector<double> *exampleTable)
+{
+    return (exampleTable[rand()%(exampleTable->size())]);
+}
+
+void Teacher::BackPropagationAlgorithm()
+{
+    QVector<QVector <double> > example;
+    example.resize(5);
+    for(uint8_t i=0; i<5; i++)
+    {
+       example[i].resize(3);
+    }
+
+    teachingCycleCounter = 0;
+    qualificationThreshold = 0.05;
+    eta = 0.6;
+    example[0][0] = 0.95;
+    example[0][1] = 0.1;
+    example[0][2] = 0.1;
+    example[1][0] = 1.05;
+    example[1][1] = 0.2;
+    example[1][2] = 0;
+    example[2][0] = 0.99;
+    example[2][1] = 0.01;
+    example[2][2] = 0.1;
+    example[3][0] = 0.1;
+    example[3][1] = 1;
+    example[3][2] = 0.1;
+    example[4][0] = 0.05;
+    example[4][1] = 0.95;
+    example[4][2] = 0.1;
+    QVector <double> expOutp;
+    expOutp.resize(2);
+
+    expOutp[0] = 0.1;
+    expOutp[1] = 0.9;
+
+    do
+    {
+        //  Choose an example
+        QVector<double> *input = this->RandomizeTeachingExample(example);
+        //  Load it in the network
+        this->network->LoadNetworkInput(*input);
+        this->network->CalculateNetworkAnswer();
+        this->entireNetworkError = CalculateEntireNetworkError();
+        for(uint16_t outputNeuronIndex=0; outputNeuronIndex<this->network->GetNeuronsNumber(this->network->GetLayersNumber()-1); outputNeuronIndex++)
+        {
+            CalculateLastNeuronError(this->network->GetLayerAt(this->network->GetLayersNumber()-1)->GetNeuronAt(outputNeuronIndex));
+        }
+    }while(entireNetworkError>qualificationThreshold);
+
+    delete example;
+}
+
