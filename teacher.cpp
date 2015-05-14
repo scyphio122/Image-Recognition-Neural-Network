@@ -72,9 +72,9 @@ void Teacher::CalculateEntireNetworkError()
  * @param exampleTable  -   The pointer to the table containing all the known examples to be taught
  * @return  The pointer to the randomized example
  */
-QVector <double> Teacher::RandomizeTeachingExample(QVector<double> *exampleTable)
+QVector <QVector <double> >* Teacher::RandomizeTeachingExample(QVector <QVector<double> > *exampleTable)
 {
-    return (exampleTable[rand()%(exampleTable->size())]);
+    return &(exampleTable[rand()%(exampleTable->size())]);
 }
 
 void Teacher::BackPropagationAlgorithm()
@@ -113,17 +113,40 @@ void Teacher::BackPropagationAlgorithm()
     do
     {
         //  Choose an example
-        QVector<double> *input = this->RandomizeTeachingExample(example);
+        QVector <QVector<double> >*input;
+        input->resize(1);
+
+        *input = this->RandomizeTeachingExample(&example);
         //  Load it in the network
-        this->network->LoadNetworkInput(*input);
+        this->network->LoadNetworkInput(*input[0]);
         this->network->CalculateNetworkAnswer();
-        this->entireNetworkError = CalculateEntireNetworkError();
+        CalculateEntireNetworkError();
         for(uint16_t outputNeuronIndex=0; outputNeuronIndex<this->network->GetNeuronsNumber(this->network->GetLayersNumber()-1); outputNeuronIndex++)
         {
             CalculateLastNeuronError(this->network->GetLayerAt(this->network->GetLayersNumber()-1)->GetNeuronAt(outputNeuronIndex));
         }
-    }while(entireNetworkError>qualificationThreshold);
+        for(int16_t layerIndex=network->GetLayersNumber()-2; layerIndex>=0; layerIndex--)
+        {
+            //  BIAS
+            CalculateCommonNeuronError(network->GetLayerAt(layerIndex)->GetBias());
+            for(uint16_t connectionIndex=0; connectionIndex<this->network->GetLayerAt(layerIndex)->GetBias()->ConnectionsSize(); connectionIndex++)
+            {
+                ChangeWeight(this->network->GetLayerAt(layerIndex)->GetBias()->GetConnectionAt(connectionIndex), this->network->GetLayerAt(layerIndex)->GetBias());
 
-    delete example;
+            }
+
+            for(uint16_t neuronIndex=0; neuronIndex< network->GetNeuronsNumber(layerIndex); neuronIndex++)
+            {
+                CalculateCommonNeuronError(network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex));
+                for(uint16_t connectionIndex=0; connectionIndex<this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->ConnectionsSize(); connectionIndex++)
+                {
+                    ChangeWeight(this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->GetConnectionAt(connectionIndex), this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex));
+
+                }
+            }
+        }
+        teachingCycleCounter++;
+    }while(entireNetworkError>qualificationThreshold || teachingCycleCounter <= 2000);
+    example.clear();
 }
 

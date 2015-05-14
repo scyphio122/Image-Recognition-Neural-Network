@@ -48,7 +48,7 @@ public:
     void        CalculateEntireNetworkError();
     void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
-    QVector <double>    RandomizeTeachingExample(QVector <double> *exampleTable);
+    QVector <QVector<double>  >*RandomizeTeachingExample(QVector<QVector<double> > *exampleTable);
     void        BackPropagationAlgorithm();
 
 
