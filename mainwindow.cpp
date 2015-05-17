@@ -2,6 +2,10 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include "teacher.h"
+#include <string>
+extern QVector <double> object;                     // DEBUG
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -74,7 +78,9 @@ void MainWindow::on_pB_BudujSiec_clicked()
         else
             DisplayWarning(NETWORK_NOT_LOADED);
     }
-
+    Teacher teacher;
+    teacher.SetNetwork(&network);
+    teacher.BackPropagationAlgorithm();
 
 }
 
@@ -105,4 +111,23 @@ void MainWindow::on_pB_SaveNetwork_clicked()
     }
     else
         DisplayWarning(NETWORK_NOT_SAVED);
+}
+
+void MainWindow::on_le_input1_returnPressed()
+{
+    object[0] = this->ui->le_input1->text().toDouble();
+}
+
+void MainWindow::on_lE_input2_returnPressed()
+{
+    object[1] = this->ui->lE_input2->text().toDouble();
+}
+
+void MainWindow::on_lE_input3_returnPressed()
+{
+    object[2] = this->ui->lE_input3->text().toDouble();
+    this->network.LoadNetworkInput(object);
+    this->network.CalculateNetworkAnswer();
+    QString output = QString::number(this->network.GetLayerAt(2)->GetNeuronAt(0)->GetOutput());
+    this->ui->lE_output->setText((output));
 }

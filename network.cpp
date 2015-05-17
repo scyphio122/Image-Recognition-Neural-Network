@@ -1,13 +1,15 @@
 #include "network.h"
 #include <iostream>
 #include <QString>
+#include <QVector>
 using namespace std;
 
+QVector <double> object;
 enum  TransportFunction_e transportFunction;
 Network::Network()
 {
     layersNumber = 0;
-
+    object.resize(4);           // DEBUG
 }
 
 Network::~Network()
@@ -276,7 +278,7 @@ uint16_t    Network::GetNeuronsNumber(uint8_t layerIndex)
  */
 bool Network::LoadNetworkInput(QVector <double> inputExample)
 {
-    if(inputExample.size() != this->GetLayerAt(0)->GetNeuronsNumber())
+    if(inputExample.size()-1 != this->GetLayerAt(0)->GetNeuronsNumber())
         return false;
 
     for(uint16_t neuronIndex=0; neuronIndex <this->GetLayerAt(0)->GetNeuronsNumber(); neuronIndex++)
@@ -294,23 +296,25 @@ void Network::CalculateNetworkAnswer()
 {
     for(uint8_t layerIndex=0; layerIndex<this->layersNumber; layerIndex++)
     {
+        //  If it isn't the last layer
+        if(layerIndex<this->layersNumber-1)
+        {
+            //  Go through all neurons in the layer...
+            for(uint16_t neuronIndex=0; neuronIndex<neuronsNumber[layerIndex+1]; neuronIndex++)
+            {
+                //  .. and clear their inputs
+                this->GetLayerAt(layerIndex+1)->GetNeuronAt(neuronIndex)->ClearInput();
+            }
+        }
+
         //  For each layer, calculate its biasNeuron output
         this->GetLayerAt(layerIndex)->GetBias()->CalculateOutput();
-        for(uint16_t neuronIndex=0;neuronIndex<this->GetNeuronsNumber(layerIndex); layerIndex++)
+        //  Go through all neurons in the layer
+        for(uint16_t neuronIndex=0;neuronIndex<this->GetNeuronsNumber(layerIndex); neuronIndex++)
         {
-            //  If it is the first layer, the input should be already loaded
-            if(layerIndex == 0)
-            {
-                //  Calculate input layer neurons output
+                //  Calculate outputs of all CommonNeurons in the layer
                 this->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->CalculateOutput();
-            }
-            else
-            {
-                //  Else, if it is any other layer, then load an input to the neuron first
-                this->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->LoadInput_MiddleLayer();
-                //  And then calculate its output
-                this->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->CalculateOutput();
-            }
+
         }
     }
 }

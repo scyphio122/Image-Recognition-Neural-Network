@@ -15,7 +15,9 @@ class Connection: public FileHandler
 {
 private:
     double weight;
+    double previousWeight;
     Neuron* targetNeuron;
+    double pureSignal;
 public:
     Connection();
     ~Connection();
@@ -23,6 +25,7 @@ public:
     void SetWeight(double weightToSet);
     void SetNeuronAddress(Neuron *targetNeuron);
     double GetWeight();
+    double GetPreviousWeight();
     Neuron* GetConnectedNeuron();
 
 

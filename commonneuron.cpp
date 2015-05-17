@@ -104,27 +104,7 @@ bool CommonNeuron::SourceNeuronConnectionEmpty()
     return this->sourceNeuronConnection.isEmpty();
 }
 
-/**
- * @brief CommonNeuron::LoadInput_MiddleLayer   -   This function sets the input's value to zero, calculates the combinations of weights and output for each neuron from the previous layer, calculates the sum of them and saves it in the input of the neuron, which called this method.
- */
-void CommonNeuron::LoadInput_MiddleLayer()
-{
-    //  Clear input of the CommonNeuron
-    ClearInput();
-    //  If it is the first layer
-    if(this->sourceNeuronConnection.isEmpty())
-    {
-        //  TODO:   Implement loading inputs in the first layers
-    }
-    else    //  If it isn't the first layer
-    {
-        //  The input is a sum of multiplications of weights and outputs from the biasNeuron (sourceConnectionIndex == 0) and previousLayer neurons
-        for(uint16_t sourceConnectionIndex=0; sourceConnectionIndex<SourceConnectionsSize(); sourceConnectionIndex++)
-        {
-            this->input += (this->sourceNeuronConnection[sourceConnectionIndex]->GetWeight()*this->sourceNeuronConnection[sourceConnectionIndex]->GetConnectedNeuron()->GetOutput());
-        }
-    }
-}
+
 
 /**
  * @brief CommonNeuron::LoadInput_InputLayer    -   This function is called in order to load an example to recognize to the input neurons of the network

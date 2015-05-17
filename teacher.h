@@ -16,14 +16,14 @@ class Teacher
 {
 private:
     double      qualificationThreshold;
-    double      alpha;
-    double      eta;
+    double      alpha;                      //  Momentum coefficient
+    double      eta;                        //  The Learning speed coefficient
     uint32_t    teachingCycleCounter;
     double      connectionError;
     double      entireNetworkError;
     Network*    network;
 
-    QVector <double>      expectedOutput;
+    double      expectedOutput;
     //Image*      image;
 
     double        CalculateNeuronsError(Neuron*   neuron);
@@ -40,6 +40,7 @@ public:
     double      GetQualificationThreshold();
     void        SetAlpha(double alpha);
     void        SetEta(double eta);
+    void        SetNetwork(Network* networkToSet);
     void        SetTeachingCycleCounter(uint32_t    teachingCycleCounterToSet);
     void        SetQualificationError(double qualificationThhresholdToSet);
     void        SetOutputError(Neuron *outputNeuron);
@@ -48,7 +49,7 @@ public:
     void        CalculateEntireNetworkError();
     void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
-    QVector <QVector<double>  >*RandomizeTeachingExample(QVector<QVector<double> > *exampleTable);
+    uint8_t RandomizeTeachingExample(QVector<QVector<double> > *exampleTable);
     void        BackPropagationAlgorithm();
 
 

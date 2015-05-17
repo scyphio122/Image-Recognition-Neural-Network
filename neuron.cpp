@@ -56,13 +56,24 @@ void Neuron::AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber)
 {
     this->targetNeuronConnection.reserve(connectionsNumber);
 }
+/**
+ * @brief CommonNeuron::LoadInput_MiddleLayer   -   This function adds the calculated neuron output multiplied by the connection weight, to the inputs of the neurons pointed by the targetNeuron connections.
+ */
+void Neuron::LoadSignalInNextNeurons(double signal)
+{
+    //  The input is a sum of each neuron is multiplication of weight and outputs from the biasNeuron (sourceConnectionIndex == 0) and previousLayer neurons
+    for(uint16_t targetConnectionIndex=0; targetConnectionIndex<this->ConnectionsSize(); targetConnectionIndex++)
+    {
+        this->targetNeuronConnection[targetConnectionIndex].GetConnectedNeuron()->input += this->targetNeuronConnection[targetConnectionIndex].GetWeight()*signal;
+    }
+}
 
 /**
  * @brief Neuron::CalculateOutput   This function calculates an output of the neuron based on the chosen in MainWindow transport function type
  */
 void Neuron::CalculateOutput()
 {
-    static double x = this->input;
+     double x = this->input;
 
 #ifdef    BIPOLAR_SIGMOID_FUNCTION
         this->output = 2/(1 + exp(-beta*x)) - 1;
@@ -70,7 +81,7 @@ void Neuron::CalculateOutput()
 #ifdef  UNIPOLAR_SIGMOID_FUNCTION
         this->output = 1/(1 + exp(-beta*x));
 #endif
-
+    this->LoadSignalInNextNeurons(this->output);
     return;
 }
 

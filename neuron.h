@@ -47,6 +47,7 @@ public:
     void        SetNeuronError(double value);
     double      GetInput();
     uint16_t    ConnectionsSize();
+    void        LoadSignalInNextNeurons(double signal);
 
 };
 

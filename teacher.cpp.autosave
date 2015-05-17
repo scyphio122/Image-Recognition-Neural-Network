@@ -152,7 +152,7 @@ void Teacher::BackPropagationAlgorithm()
         CalculateEntireNetworkError();
         teachingCycleCounter++;
         cout<< teachingCycleCounter+0<<"  Blad: "<<this->entireNetworkError+0<<endl;
-    }while(entireNetworkError>qualificationThreshold || teachingCycleCounter <= 100000);
+    }while(entireNetworkError>qualificationThreshold && teachingCycleCounter <= 100000);
     example.clear();
 
 }

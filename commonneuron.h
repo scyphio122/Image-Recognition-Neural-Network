@@ -19,8 +19,7 @@ public:
     CommonNeuron();
     ~CommonNeuron();
     void SetIndex(uint16_t index);
-    uint16_t GetIndex();
-    void LoadInput_MiddleLayer();
+    uint16_t GetIndex();   
     void LoadInput_InputLayer(double input);
     void ClearInput();
     void ConnectNeuronsFromPreviousLayer(Layer* previousLayer);

@@ -30,6 +30,12 @@ private slots:
     void on_pB_SaveNetwork_clicked();
 
 
+    void on_le_input1_returnPressed();
+
+    void on_lE_input2_returnPressed();
+
+    void on_lE_input3_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 };

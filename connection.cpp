@@ -4,7 +4,9 @@
 #include "neuron.h"
 Connection::Connection()
 {
-    RandomizeWeight();
+    //RandomizeWeight();
+    this->weight = 0;
+    this->previousWeight = 0;
 }
 
 Connection::~Connection()
@@ -25,9 +27,14 @@ double Connection::GetWeight()
 {
     return this->weight;
 }
+double Connection::GetPreviousWeight()
+{
+    return this->previousWeight;
+}
 
 void Connection::SetWeight(double weightToSet)
 {
+    this->previousWeight = this->weight;
     this->weight = weightToSet;
 }
 
@@ -35,5 +42,3 @@ Neuron* Connection::GetConnectedNeuron()
 {
     return (this->targetNeuron);
 }
-
-
