@@ -97,7 +97,7 @@ bool Network::CreateNetwork(bool weightsFromFileOrRandom)
         // ...and connect neurons between the adjascent two layers
         layer[index].ConnectNeuronsBetweenLayers(&layer[index], &layer[index+1], weightsFromFileOrRandom, this->loadFromFile);
     }
-    TestConnections();
+   // TestConnections();
     return true;
 }
 

@@ -46,10 +46,10 @@ public:
     void        SetOutputError(Neuron *outputNeuron);
     void        CalculateLastNeuronError(CommonNeuron *outputNeuron);
     void        CalculateCommonNeuronError(Neuron* thisNeuron);
-    void        CalculateEntireNetworkError();
+    void        CalculateEntireNetworkErrorForCurrentExample();
     void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
-    uint8_t RandomizeTeachingExample(QVector<QVector<double> > *exampleTable);
+    uint8_t     RandomizeTeachingExample(QVector<QVector<double> > *exampleTable);
     void        BackPropagationAlgorithm();
 
 

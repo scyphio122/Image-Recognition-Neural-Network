@@ -57,7 +57,7 @@ void Teacher::ChangeWeight(Connection* connection, Neuron* sourceNeuron)
 
 
 
-void Teacher::CalculateEntireNetworkError()
+void Teacher::CalculateEntireNetworkErrorForCurrentExample()
 {
     double sumOfErrors = 0;
    for(uint16_t i=0; i<network->GetNeuronsNumber(network->GetLayersNumber()-1); i++)
@@ -75,7 +75,7 @@ void Teacher::CalculateEntireNetworkError()
  */
 uint8_t Teacher::RandomizeTeachingExample(QVector <QVector<double> > *exampleTable)
 {
-    return rand()%(exampleTable->size());
+    return (rand()*871+71)%(exampleTable->size());
 }
 
 void Teacher::BackPropagationAlgorithm()
@@ -87,10 +87,12 @@ void Teacher::BackPropagationAlgorithm()
        example[i].resize(4);
     }
 
+    double entireNetworkErrorForAllExamples;
     teachingCycleCounter = 0;
-    qualificationThreshold = 0.0005;
+    qualificationThreshold = 0.000005;
     eta = 0.6;
     alpha = 0.5;
+
     example[0][0] = 0.95;
     example[0][1] = 0.1;
     example[0][2] = 0.1;
@@ -111,48 +113,71 @@ void Teacher::BackPropagationAlgorithm()
     example[4][1] = 0.95;
     example[4][2] = 0.1;
     example[4][3] = 0.9;
-    QVector <double> expOutp;
+
     QVector<double> input;
     input.resize(4);
+    //  Get number of teaching examples
+    uint16_t exampleSize = example.size();
     do
     {
-        //  Choose an example
-
-        uint8_t exampleNumber = this->RandomizeTeachingExample(&example);
-        input = example[exampleNumber];
-        this->expectedOutput = input.at(3);
-        //  Load it in the network
-        this->network->LoadNetworkInput(input);
-        this->network->CalculateNetworkAnswer();
-
-        for(uint16_t outputNeuronIndex=0; outputNeuronIndex<this->network->GetNeuronsNumber(this->network->GetLayersNumber()-1); outputNeuronIndex++)
+        entireNetworkErrorForAllExamples = 0;
+        do
         {
-            CalculateLastNeuronError(this->network->GetLayerAt(this->network->GetLayersNumber()-1)->GetNeuronAt(outputNeuronIndex));
-        }
-        for(int16_t layerIndex=network->GetLayersNumber()-2; layerIndex>=0; layerIndex--)
-        {
-            //  BIAS
-            CalculateCommonNeuronError(network->GetLayerAt(layerIndex)->GetBias());
-            for(uint16_t connectionIndex=0; connectionIndex<this->network->GetLayerAt(layerIndex)->GetBias()->ConnectionsSize(); connectionIndex++)
-            {
-                ChangeWeight(this->network->GetLayerAt(layerIndex)->GetBias()->GetConnectionAt(connectionIndex), this->network->GetLayerAt(layerIndex)->GetBias());
+            //  Choose an example
 
-            }
+            uint8_t exampleNumber = this->RandomizeTeachingExample(&example);
+            input = example[exampleNumber];
+            this->expectedOutput = input.at(3);
+            //  Load it in the network
+            this->network->LoadNetworkInput(input);
+            this->network->CalculateNetworkAnswer();
+            CalculateEntireNetworkErrorForCurrentExample();
 
-            for(uint16_t neuronIndex=0; neuronIndex< network->GetNeuronsNumber(layerIndex); neuronIndex++)
+            //  If an error for the specified example is bigger then qualification threshold then change weights, otherwise skip changes
+            if(this->entireNetworkError > qualificationThreshold)
             {
-                CalculateCommonNeuronError(network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex));
-                for(uint16_t connectionIndex=0; connectionIndex<this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->ConnectionsSize(); connectionIndex++)
+                for(uint16_t outputNeuronIndex=0; outputNeuronIndex<this->network->GetNeuronsNumber(this->network->GetLayersNumber()-1); outputNeuronIndex++)
                 {
-                    ChangeWeight(this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->GetConnectionAt(connectionIndex), this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex));
-
+                    CalculateLastNeuronError(this->network->GetLayerAt(this->network->GetLayersNumber()-1)->GetNeuronAt(outputNeuronIndex));
                 }
+                for(int16_t layerIndex=network->GetLayersNumber()-2; layerIndex>=0; layerIndex--)
+                {
+                    //  BIAS
+                    CalculateCommonNeuronError(network->GetLayerAt(layerIndex)->GetBias());
+                    for(uint16_t connectionIndex=0; connectionIndex<this->network->GetLayerAt(layerIndex)->GetBias()->ConnectionsSize(); connectionIndex++)
+                    {
+                        ChangeWeight(this->network->GetLayerAt(layerIndex)->GetBias()->GetConnectionAt(connectionIndex), this->network->GetLayerAt(layerIndex)->GetBias());
+
+                    }
+
+                    for(uint16_t neuronIndex=0; neuronIndex< network->GetNeuronsNumber(layerIndex); neuronIndex++)
+                    {
+                        CalculateCommonNeuronError(network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex));
+                        for(uint16_t connectionIndex=0; connectionIndex<this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->ConnectionsSize(); connectionIndex++)
+                        {
+                            ChangeWeight(this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex)->GetConnectionAt(connectionIndex), this->network->GetLayerAt(layerIndex)->GetNeuronAt(neuronIndex));
+
+                        }
+                    }
+                }
+                //  Calculate an error after changes of weights
+                this->network->CalculateNetworkAnswer();
+                CalculateEntireNetworkErrorForCurrentExample();
             }
-        }
-        CalculateEntireNetworkError();
-        teachingCycleCounter++;
-        cout<< teachingCycleCounter+0<<"  Blad: "<<this->entireNetworkError+0<<endl;
-    }while(entireNetworkError>qualificationThreshold || teachingCycleCounter <= 100000);
+            else
+                continue; // Error when entireNetworkErrorForAllExamples > qualificationThreshold == 4
+
+            cout<< teachingCycleCounter+0<<"  Blad: "<<this->entireNetworkError+0<<" przyklad: "<<exampleNumber+0<<endl;
+            entireNetworkErrorForAllExamples += this->entireNetworkError;
+            teachingCycleCounter++;
+
+        }while(teachingCycleCounter%(exampleSize) < (uint16_t)(exampleSize-1));
+
+        entireNetworkErrorForAllExamples = entireNetworkErrorForAllExamples/(exampleSize);
+        cout<<"\nCalkowity blad sieci dla wszystkich przykladow: "<<entireNetworkErrorForAllExamples+0<<endl;
+    }while(entireNetworkErrorForAllExamples > qualificationThreshold && teachingCycleCounter <= 100000);
+
+    cout<<"Koncowa liczba cykli: "<<teachingCycleCounter+0<<endl;
     example.clear();
 
 }
