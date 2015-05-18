@@ -89,7 +89,7 @@ void Teacher::BackPropagationAlgorithm()
 
     double entireNetworkErrorForAllExamples;
     teachingCycleCounter = 0;
-    qualificationThreshold = 0.000005;
+    qualificationThreshold = 0.00005;
     eta = 0.6;
     alpha = 0.5;
 
@@ -117,7 +117,8 @@ void Teacher::BackPropagationAlgorithm()
     QVector<double> input;
     input.resize(4);
     //  Get number of teaching examples
-    uint16_t exampleSize = example.size();
+    uint16_t examplesNumber = example.size();
+    uint16_t notRejectedExampleCounter = 0;
     do
     {
         entireNetworkErrorForAllExamples = 0;
@@ -165,19 +166,20 @@ void Teacher::BackPropagationAlgorithm()
                 CalculateEntireNetworkErrorForCurrentExample();
             }
             else
-                continue; // Error when entireNetworkErrorForAllExamples > qualificationThreshold == 4
+                continue;
 
-            cout<< teachingCycleCounter+0<<"  Blad: "<<this->entireNetworkError+0<<" przyklad: "<<exampleNumber+0<<endl;
+
             entireNetworkErrorForAllExamples += this->entireNetworkError;
             teachingCycleCounter++;
+            notRejectedExampleCounter++;
+            cout<< teachingCycleCounter+0<<"  Blad: "<<this->entireNetworkError+0<<" przyklad: "<<exampleNumber+0<<endl;
+        }while(notRejectedExampleCounter < examplesNumber);
 
-        }while(teachingCycleCounter%(exampleSize) < (uint16_t)(exampleSize-1));
-
-        entireNetworkErrorForAllExamples = entireNetworkErrorForAllExamples/(exampleSize);
+        notRejectedExampleCounter = 0;
+        entireNetworkErrorForAllExamples = entireNetworkErrorForAllExamples/(examplesNumber);
         cout<<"\nCalkowity blad sieci dla wszystkich przykladow: "<<entireNetworkErrorForAllExamples+0<<endl;
-    }while(entireNetworkErrorForAllExamples > qualificationThreshold && teachingCycleCounter <= 100000);
+    }while(entireNetworkErrorForAllExamples > qualificationThreshold && teachingCycleCounter < 200000);
 
-    cout<<"Koncowa liczba cykli: "<<teachingCycleCounter+0<<endl;
     example.clear();
 
 }

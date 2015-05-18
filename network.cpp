@@ -289,7 +289,8 @@ bool Network::LoadNetworkInput(QVector <double> inputExample)
 }
 
 /**
- * @brief Network::CalculateNetworkAnswer   -   This function is called to propagate the input data through the network and calculate the network's answer.
+ * @brief Network::CalculateNetworkAnswer   -   This function is called to propagate the input data through the network and calculate the network's answer. But before
+ *                                              calculating the output it clears inputs of all neurons but these from the input layer.
  *                                              NOTE:   It MUST be called AFTER loading data in the input layer's neurons
  */
 void Network::CalculateNetworkAnswer()
@@ -299,7 +300,7 @@ void Network::CalculateNetworkAnswer()
         //  If it isn't the last layer
         if(layerIndex<this->layersNumber-1)
         {
-            //  Go through all neurons in the layer...
+            //  Go through all neurons in the next layer...
             for(uint16_t neuronIndex=0; neuronIndex<neuronsNumber[layerIndex+1]; neuronIndex++)
             {
                 //  .. and clear their inputs
