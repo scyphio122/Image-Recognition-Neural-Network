@@ -36,6 +36,8 @@ private slots:
 
     void on_lE_input3_returnPressed();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

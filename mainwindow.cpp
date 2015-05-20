@@ -4,6 +4,8 @@
 #include <QMessageBox>
 #include "teacher.h"
 #include <string>
+#include "image.h"
+#include <highgui/highgui.hpp>
 extern QVector <double> object;                     // DEBUG
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -130,4 +132,51 @@ void MainWindow::on_lE_input3_returnPressed()
     this->network.CalculateNetworkAnswer();
     QString output = QString::number(this->network.GetLayerAt(2)->GetNeuronAt(0)->GetOutput());
     this->ui->lE_output->setText((output));
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    QFileDialog loadDialog;
+    QStringList fileNames;
+    loadDialog.setParent(this);
+    //  The ability to choose both existing and non-existing files
+    loadDialog.setFileMode(QFileDialog::ExistingFiles);
+    //  The AcceptButton is Save button
+    loadDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    //  Show only .txt files
+    loadDialog.setNameFilter("Image(*.jpg *jpeg)");
+    //  Show detailed description of files
+    loadDialog.setViewMode(QFileDialog::Detail);
+    //  Set directory to C:/Users/Konrad/Desktop/
+    loadDialog.setDirectory("C:/Users/Konrad/Desktop/");
+
+    //  Show the save window and get the filename
+    if (loadDialog.exec())
+        fileNames = loadDialog.selectedFiles();
+    if(!fileNames.isEmpty())
+    {
+        Image obraz;
+        Image binarnyObraz;
+        Mat kontury;
+        for(int i=0; i<fileNames.size(); i++)
+        {
+            string directory = fileNames[i].toStdString();
+            vector<vector <Point> > contours;
+            obraz.SetDirectory(directory);
+            obraz.LoadImage();
+            obraz.Convert2HSV();
+            binarnyObraz.SetImage(obraz.AutomaticThreshold(obraz.GetHSV(V_channel)));
+            contours = binarnyObraz.FindContours(kontury);
+            binarnyObraz.SetImage(kontury);
+            QPixmap obrazWczytany;
+            QPixmap kontur;
+            obraz.ConvertMat2QPixmap(obraz.GetImage(), obrazWczytany);
+            binarnyObraz.ConvertMat2QPixmap(binarnyObraz.GetImage(), kontur);
+
+            ui->label_8->setPixmap(obrazWczytany);
+            ui->label_7->setPixmap(kontur);
+            if(getchar() == 27)
+                break;
+        }
+    }
 }
