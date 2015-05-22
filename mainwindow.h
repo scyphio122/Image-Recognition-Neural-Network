@@ -3,6 +3,7 @@
 #include "create_network_dialog.h"
 #include "network.h"
 #include <QMainWindow>
+#include "image.h"
 
 #define NETWORK_NOT_SAVED   "Sieć nie została zapisana."
 #define NETWORK_NOT_LOADED  "Sieć nie została wczytana."
@@ -18,10 +19,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     Network network;
+    Image  *image;
+    Image  *contour;
     ~MainWindow();
 
 private slots:
     void DisplayWarning(string text);
+
+    void ConvertMat2QPixmap(Mat image, QPixmap &pixmap);
 
     void on_pB_UsunSiec_pressed();
 
@@ -37,6 +42,8 @@ private slots:
     void on_lE_input3_returnPressed();
 
     void on_pushButton_clicked();
+
+    void on_hS_Threshold_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

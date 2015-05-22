@@ -19,9 +19,11 @@ private:
     Mat             image;
     string          imageName;
     vector<Mat>     hsv;
-
+    vector <vector <Point> > contoursFound;
 
 public:
+
+
     Image();
     ~Image();
 
@@ -34,12 +36,16 @@ public:
     string                  GetImageName();
     void                    Convert2HSV();
     Mat                     GetHSV(uint8_t channel);
-    vector<vector<Point> >  FindContours(Mat &outputImage);
+    void                    ResizeImage();
+    void                    FindContours(Mat &outputImage);
+    vector<vector<Point> >  GetCountoursFound();
+    Vector<Point>           GetMaxCountour();
 
-    Mat                     AutomaticThreshold(Mat image);
-    Mat                     HandMadeThreshold(Mat image, int value);
-    void                    ConvertMat2QPixmap(Mat image, QPixmap &pixmap);
+    Mat                     AutomaticThreshold(Mat inputImage);
+
+
 
 };
 
+  void                    HandMadeThreshold(Mat inputImage, Mat &outputImage, int value);
 #endif // IMAGE_H

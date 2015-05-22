@@ -6,6 +6,8 @@
 #include <string>
 #include "image.h"
 #include <highgui/highgui.hpp>
+#include <QWaitCondition>
+
 extern QVector <double> object;                     // DEBUG
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,11 +15,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    image = new Image;
+    contour = new Image;
+
 }
 
 MainWindow::~MainWindow()
 {
+    delete contour;
+    delete image;
     delete ui;
+
+    image = NULL;
+    contour = NULL;
 }
 
 void MainWindow::DisplayWarning(string text)
@@ -148,35 +158,95 @@ void MainWindow::on_pushButton_clicked()
     //  Show detailed description of files
     loadDialog.setViewMode(QFileDialog::Detail);
     //  Set directory to C:/Users/Konrad/Desktop/
-    loadDialog.setDirectory("C:/Users/Konrad/Desktop/");
+    loadDialog.setDirectory("C:/Users/Konrad/Desktop/obrazki binarne");
 
     //  Show the save window and get the filename
     if (loadDialog.exec())
         fileNames = loadDialog.selectedFiles();
     if(!fileNames.isEmpty())
     {
-        Image obraz;
-        Image binarnyObraz;
         Mat kontury;
         for(int i=0; i<fileNames.size(); i++)
         {
             string directory = fileNames[i].toStdString();
-            vector<vector <Point> > contours;
-            obraz.SetDirectory(directory);
-            obraz.LoadImage();
-            obraz.Convert2HSV();
-            binarnyObraz.SetImage(obraz.AutomaticThreshold(obraz.GetHSV(V_channel)));
-            contours = binarnyObraz.FindContours(kontury);
-            binarnyObraz.SetImage(kontury);
+
+            image->SetDirectory(directory);
+            image->LoadImage();
+            image->Convert2HSV();
+            contour->SetImage(image->AutomaticThreshold(image->GetHSV(V_channel)));
+
+            //bitwise_not(contour->GetImage(), contour->GetImage());
+            erode(contour->GetImage(), contour->GetImage(), 21);
+            morphologyEx(contour->GetImage(), contour->GetImage(), MORPH_OPEN, 3 );
+            medianBlur(contour->GetImage(), contour->GetImage(), 3);
+
+
+            contour->FindContours(kontury);
+
+            contour->SetImage(kontury);
             QPixmap obrazWczytany;
             QPixmap kontur;
-            obraz.ConvertMat2QPixmap(obraz.GetImage(), obrazWczytany);
-            binarnyObraz.ConvertMat2QPixmap(binarnyObraz.GetImage(), kontur);
-
+            QPixmap Vchannel;
+            ConvertMat2QPixmap(image->GetImage(), obrazWczytany);
+            ConvertMat2QPixmap(contour->GetImage(), kontur);
+            ConvertMat2QPixmap(image->GetHSV(V_channel), Vchannel);
             ui->label_8->setPixmap(obrazWczytany);
             ui->label_7->setPixmap(kontur);
-            if(getchar() == 27)
-                break;
+            ui->label_9->setPixmap(Vchannel);
+
         }
     }
+}
+
+void MainWindow::on_hS_Threshold_valueChanged(int value)
+{
+     QPixmap kontur;
+     Mat kontury;
+
+     if(!image->GetHSV(V_channel).empty())
+     {
+         HandMadeThreshold(image->GetHSV(V_channel), kontury, value);
+
+
+        /* erode(kontury, kontury, 21);
+         morphologyEx(kontury, kontury, MORPH_OPEN, 3 );
+         medianBlur(kontury, kontury, 3);*/
+         contour->SetImage(kontury);
+         contour->FindContours(kontury);
+
+         ConvertMat2QPixmap(kontury, kontur);
+         ui->label_7->setPixmap(kontur);
+
+     }
+}
+
+/**
+ * @brief MainWindow::ConvertMat2QPixmap -   This function is called in order to convert the Mat image to Pixmap
+ * @param image                     -   The image to convert (input)
+ * @param pixmap                    -   The pixmap where the image will be stored (output)
+ */
+void MainWindow::ConvertMat2QPixmap(Mat image, QPixmap &pixmap)
+{
+     Mat temp;
+     image.copyTo(temp);
+
+     if(!temp.empty())
+     {
+         if(image.rows > 240 || image.cols > 320)
+             cv::resize(image, temp, Size(320, 240), 0,0);
+     }
+
+
+     QImage imageqt;
+     imageqt.fill(qRgba(0,0,0,0));
+    //  If the image is colourer (?)
+    if(image.channels() == 3)
+    {
+         imageqt = QImage(temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
+         imageqt = imageqt.convertToFormat(QImage::Format_RGBA8888);
+    }
+    else    //  If the image is gray-scaled
+        imageqt = QImage(temp.data, temp.cols, temp.rows, temp.step, QImage::Format_Mono);
+
+    pixmap = QPixmap::fromImage(imageqt);
 }
