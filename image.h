@@ -38,8 +38,8 @@ public:
     Mat                     GetHSV(uint8_t channel);
     void                    ResizeImage();
     void                    FindContours(Mat &outputImage);
-    vector<vector<Point> >  GetCountoursFound();
-    Vector<Point>           GetMaxCountour();
+    vector<vector<Point> >  GetContoursFound();
+    int                     GetMaxContourIndex();
 
     Mat                     AutomaticThreshold(Mat inputImage);
 

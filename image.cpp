@@ -126,16 +126,14 @@ void HandMadeThreshold(Mat inputImage, Mat &outputImage, int value)
 
 
 /**
- * @brief Image::FindContours   -   This function is called to find the contours in the caller image and draw the biggest on in the outputImage
+ * @brief Image::FindContours   -   This function is called to find the contours in the caller image and draw the biggest on in the outputImage. The list(vector) of the found contours is saved in the caller object
  * @param outputImage           -   The image where to draw the biggest contour found
- * @return  The vector containing all found contours
+ *
  */
 
 void Image::FindContours(Mat &outputImage)
 {
     Mat contour;    //  temp Mat
-    int max=0;      //  The maximum surface found in the set of the contours
-    int maxIndex;   //  The index of the biggest contour
 
     //  Copy the image to the created Mat contour because findContour changes the image
     this->image.copyTo(contour);
@@ -150,6 +148,34 @@ void Image::FindContours(Mat &outputImage)
     //  Fill the contour image with zeroes
     outputImage = Mat::zeros( contour.size(), CV_8UC3 );
 
+
+    //  Set the contour color to white
+    Scalar color = Scalar( 255, 255, 255 );
+    /*for( unsigned int i = 0; i< contours.size(); i++ )
+        drawContours( outputImage, contours, i, color, 1, 8, hierarchy, 0, Point() );*/
+    //  draw the biggest contour found
+    drawContours( outputImage, this->contoursFound, this->GetMaxContourIndex() , color, 1, 8, hierarchy, 0, Point() );
+    return;
+}
+
+/**
+ * @brief Image::GetCountoursFound  -   This function is called to return the vector of all contours found by FindCounturs method
+ * @return  vector< vector <Point> > contoursFound
+ */
+
+vector< vector <Point> > Image::GetContoursFound()
+{
+    return this->contoursFound;
+}
+/**
+ * @brief Image::GetMaxCountourIndex    -   This function returns index of the max contour found
+ * @return  -   index of the maximal contour foun
+ */
+
+int Image::GetMaxContourIndex()
+{
+    int max=0;           //  The maximum surface found in the set of the contours
+    int maxIndex=0;     //  The index of the biggest contour
     //  Find the biggest contour
     for( unsigned int i = 0; i< this->contoursFound.size(); i++ )
        {
@@ -160,16 +186,8 @@ void Image::FindContours(Mat &outputImage)
 
         }
        }
-
-    //  Set the contour color to white
-    Scalar color = Scalar( 255, 255, 255 );
-    /*for( unsigned int i = 0; i< contours.size(); i++ )
-        drawContours( outputImage, contours, i, color, 1, 8, hierarchy, 0, Point() );*/
-    //  draw the biggest contour found
-    drawContours( outputImage, this->contoursFound, maxIndex, color, 1, 8, hierarchy, 0, Point() );
-    return;
+    return maxIndex;
 }
-
 
 
 
