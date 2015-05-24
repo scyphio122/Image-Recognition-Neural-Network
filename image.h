@@ -5,6 +5,8 @@
 #include <imgproc/imgproc.hpp>
 #include <QImage>
 #include <vector>
+#include "imageparameters.h"
+
 #define     H_channel   0
 #define     S_chennel   1
 #define     V_channel   2
@@ -12,7 +14,7 @@
 using namespace std;
 using namespace cv;
 
-class Image
+class Image : public ImageParameters
 {
 private:
     string          directory;
@@ -39,10 +41,12 @@ public:
     void                    ResizeImage();
     void                    FindContours(Mat &outputImage);
     vector<vector<Point> >  GetContoursFound();
+    vector<Point>           GetMaxContour();
     int                     GetMaxContourIndex();
 
-    Mat                     AutomaticThreshold(Mat inputImage);
-
+    Mat                         AutomaticThreshold(Mat inputImage);
+    virtual double              CalculateMalinowskaCoefficient();
+    virtual std::vector<double> CalculateHuMoments();
 
 
 };

@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     network.cpp \
     create_network_dialog.cpp \
     teacher.cpp \
-    image.cpp
+    image.cpp \
+    imageparameters.cpp
 
 HEADERS  += mainwindow.h \
     layer.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     network.h \
     create_network_dialog.h \
     teacher.h \
-    image.h
+    image.h \
+    imageparameters.h
 
 FORMS    += mainwindow.ui \
     create_network.ui

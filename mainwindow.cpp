@@ -182,18 +182,29 @@ void MainWindow::on_pushButton_clicked()
 
 
             contour->FindContours(kontury);
-
             contour->SetImage(kontury);
+
+            contour->CalculateHuMoments();
+            contour->CalculateMalinowskaCoefficient();
+            vector <double>huMoments = contour->GetHuMoments();
+            ui->lE_Hu1->setText(QString::number(huMoments[0]));
+            ui->lE_Hu2->setText(QString::number(huMoments[1]));
+            ui->lE_Hu3->setText(QString::number(huMoments[2]));
+            ui->lE_Hu4->setText(QString::number(huMoments[3]));
+            ui->lE_Hu5->setText(QString::number(huMoments[4]));
+            ui->lE_Hu6->setText(QString::number(huMoments[5]));
+            ui->lE_Hu7->setText(QString::number(huMoments[6]));
+            ui->lE_Malinowska->setText(QString::number(contour->GetMalinowskaCoefficient()));
+
+
             QPixmap obrazWczytany;
             QPixmap kontur;
-            QPixmap Vchannel;
             ConvertMat2QPixmap(image->GetImage(), obrazWczytany);
             ConvertMat2QPixmap(contour->GetImage(), kontur);
-            ConvertMat2QPixmap(image->GetHSV(V_channel), Vchannel);
-            ui->label_8->setPixmap(obrazWczytany);
-            ui->label_7->setPixmap(kontur);
-            ui->label_9->setPixmap(Vchannel);
+            ui->lE_originalImage->setPixmap(obrazWczytany);
+            ui->lE_Contour->setPixmap(kontur);
 
+            huMoments.clear();
         }
     }
 }
@@ -214,8 +225,20 @@ void MainWindow::on_hS_Threshold_valueChanged(int value)
          contour->SetImage(kontury);
          contour->FindContours(kontury);
 
+         contour->CalculateHuMoments();
+         contour->CalculateMalinowskaCoefficient();
+         vector <double>huMoments = contour->GetHuMoments();
+         ui->lE_Hu1->setText(QString::number(huMoments[0]));
+         ui->lE_Hu2->setText(QString::number(huMoments[1]));
+         ui->lE_Hu3->setText(QString::number(huMoments[2]));
+         ui->lE_Hu4->setText(QString::number(huMoments[3]));
+         ui->lE_Hu5->setText(QString::number(huMoments[4]));
+         ui->lE_Hu6->setText(QString::number(huMoments[5]));
+         ui->lE_Hu7->setText(QString::number(huMoments[6]));
+         ui->lE_Malinowska->setText(QString::number(contour->GetMalinowskaCoefficient()));
+
          ConvertMat2QPixmap(kontury, kontur);
-         ui->label_7->setPixmap(kontur);
+         ui->lE_Contour->setPixmap(kontur);
 
      }
 }

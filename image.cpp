@@ -5,6 +5,7 @@
 #include <imgproc/imgproc.hpp>
 #include <stdint-gcc.h>
 #include <QPixmap>
+#include <cmath>
 
 Image::Image()
 {
@@ -158,20 +159,21 @@ void Image::FindContours(Mat &outputImage)
     return;
 }
 
+
 /**
  * @brief Image::GetCountoursFound  -   This function is called to return the vector of all contours found by FindCounturs method
  * @return  vector< vector <Point> > contoursFound
  */
-
 vector< vector <Point> > Image::GetContoursFound()
 {
     return this->contoursFound;
 }
+
+
 /**
  * @brief Image::GetMaxCountourIndex    -   This function returns index of the max contour found
  * @return  -   index of the maximal contour foun
  */
-
 int Image::GetMaxContourIndex()
 {
     int max=0;           //  The maximum surface found in the set of the contours
@@ -187,6 +189,36 @@ int Image::GetMaxContourIndex()
         }
        }
     return maxIndex;
+}
+
+/**
+ * @brief Image::GetMaxContour  -   This function is called in order to return the array with the biggest contour found in the binarized image. It mus be called after the FindContours method.
+ * @return  The biggest contours
+ */
+vector <Point> Image::GetMaxContour()
+{
+    return this->contoursFound[this->GetMaxContourIndex()];
+}
+
+/**
+ * @brief Image::CalculateMalinowskaCoefficient -   This function is called in order to calculate the Malinowska coefficient of the biggest contour in the binarized image
+ */
+double Image::CalculateMalinowskaCoefficient()
+{
+    vector <Point> biggestContour = GetMaxContour();
+    this->malinowskaCoefficient = (arcLength(biggestContour, true))/(2*sqrt(M_PI*contourArea(biggestContour))) - 1;
+    //  Return this value for teaching algoritm - to put it in array of teaching examples
+    return this->malinowskaCoefficient;
+}
+
+/**
+ * @brief Image::CalculateHuMoments -   This function calculates the values of Hu moments of the conotur. They are both saved in the this->huMoments and returned.
+ * @return              -   The calculater vector<double> of HuMoments
+ */
+std::vector<double> Image::CalculateHuMoments()
+{
+    HuMoments(moments(this->GetMaxContour(), false), this->huMoments);
+    return this->huMoments;
 }
 
 

@@ -3,7 +3,7 @@
 
 #include <stdint-gcc.h>
 #include <QVector>
-
+#include "image.h"
 
 class Network;
 class Neuron;
@@ -24,7 +24,7 @@ private:
     Network*    network;
 
     double      expectedOutput;
-    //Image*      image;
+    Image*      image;
 
     double        CalculateNeuronsError(Neuron*   neuron);
     double        CalculateWeight(Connection* connection);
@@ -34,6 +34,7 @@ public:
     Teacher();
     ~Teacher();
 
+    void        AppendTeachingExampleFromTheLoadedImage();
     double      GetAlpha();
     double      GetEta();
     double      GetEntireNetworkError();
@@ -44,6 +45,7 @@ public:
     void        SetTeachingCycleCounter(uint32_t    teachingCycleCounterToSet);
     void        SetQualificationError(double qualificationThhresholdToSet);
     void        SetOutputError(Neuron *outputNeuron);
+    void        SetImage(Image* image);
     void        CalculateLastNeuronError(CommonNeuron *outputNeuron);
     void        CalculateCommonNeuronError(Neuron* thisNeuron);
     void        CalculateEntireNetworkErrorForCurrentExample();

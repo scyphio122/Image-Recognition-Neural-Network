@@ -5,6 +5,9 @@
 #include "network.h"
 #include <iostream>
 extern const double beta;
+vector <vector<double> > teachingExamples;
+
+
 using namespace std;
 Teacher::Teacher()
 {
@@ -26,9 +29,6 @@ double Teacher::GetEta()
 {
     return this->eta;
 }
-
-
-
 
 void Teacher::CalculateLastNeuronError(CommonNeuron *outputNeuron)
 {
@@ -187,4 +187,29 @@ void Teacher::BackPropagationAlgorithm()
 void Teacher::SetNetwork(Network *networkToSet)
 {
     this->network = networkToSet;
+}
+
+void Teacher::SetImage(Image *image)
+{
+    this->image = image;
+}
+
+/**
+ * @brief Teacher::AppendTeachingExampleFromTheLoadedImage  -   This function adds the parameters from the image saved in the Teacher::image* field to the teachingExamples vector
+ */
+void Teacher::AppendTeachingExampleFromTheLoadedImage()
+{
+    //  Create a single vector with input parameters from the image + make space for expected value
+    vector <double> inputParameters = vector<double>(this->image->GetHuMoments().size()+2);
+    //  Load hu moments
+    for(unsigned int i=0; i<inputParameters.size()-1; i++)
+    {
+        inputParameters[i] = this->image->GetHuMoment(i);
+    }
+    //  Load the Malinowska coefficient
+    inputParameters[inputParameters.size()-1] = this->image->GetMalinowskaCoefficient();
+
+    //  Load the input parameters
+    teachingExamples.push_back(inputParameters);
+
 }
