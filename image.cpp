@@ -107,7 +107,7 @@ Mat Image::AutomaticThreshold(Mat inputImage)
     //  Get rid of the smaller "holes" in image
     morphologyEx(inputImage, inputImage, MORPH_OPEN, 5);
     //  Get thresholded image
-    adaptiveThreshold(inputImage,thresholdedImage, 255, CV_ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 21, 1);
+    adaptiveThreshold(inputImage,this->contourImage, 255, CV_ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 21, 1);
 
     return thresholdedImage;
 }
@@ -118,11 +118,12 @@ Mat Image::AutomaticThreshold(Mat inputImage)
  * @param outputImage               -   The output image
  * @param value                     -   The threshold value
  */
-void HandMadeThreshold(Mat inputImage, Mat &outputImage, int value)
+void Image::HandMadeThreshold(Mat inputImage, int value)
 {
+
     //  Get rid of the smaller "holes" in image
-    morphologyEx(inputImage, outputImage, MORPH_OPEN, 5);
-    threshold(outputImage, outputImage, value, 255, THRESH_BINARY);
+    morphologyEx(inputImage, this->contourImage, MORPH_OPEN, 5);
+    threshold(this->contourImage, this->contourImage, value, 255, THRESH_BINARY);
 }
 
 
@@ -132,22 +133,22 @@ void HandMadeThreshold(Mat inputImage, Mat &outputImage, int value)
  *
  */
 
-void Image::FindContours(Mat &outputImage)
+void Image::FindContours()
 {
-    Mat contour;    //  temp Mat
+    Mat temp;    //  temp Mat
 
     //  Copy the image to the created Mat contour because findContour changes the image
-    this->image.copyTo(contour);
+    this->contourImage.copyTo(temp);
 
     vector<Vec4i> hierarchy;
 
-     bitwise_not(contour, contour);
+     bitwise_not(temp, temp);
 
 
     /// Find contours
-    findContours( contour, this->contoursFound, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+    findContours( temp, this->contoursFound, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
     //  Fill the contour image with zeroes
-    outputImage = Mat::zeros( contour.size(), CV_8UC3 );
+    this->contourImage = Mat::zeros( temp.size(), CV_8UC3 );
 
 
     //  Set the contour color to white
@@ -155,7 +156,7 @@ void Image::FindContours(Mat &outputImage)
     /*for( unsigned int i = 0; i< contours.size(); i++ )
         drawContours( outputImage, contours, i, color, 1, 8, hierarchy, 0, Point() );*/
     //  draw the biggest contour found
-    drawContours( outputImage, this->contoursFound, this->GetMaxContourIndex() , color, 1, 8, hierarchy, 0, Point() );
+    drawContours( this->contourImage, this->contoursFound, this->GetMaxContourIndex() , color, 1, 8, hierarchy, 0, Point() );
     return;
 }
 
@@ -222,5 +223,8 @@ std::vector<double> Image::CalculateHuMoments()
 }
 
 
-
+Mat Image::GetContourImage()
+{
+    return this->contourImage;
+}
 

@@ -5,7 +5,6 @@
 #include "network.h"
 #include <iostream>
 extern const double beta;
-vector <vector<double> > teachingExamples;
 
 
 using namespace std;
@@ -30,7 +29,7 @@ double Teacher::GetEta()
     return this->eta;
 }
 
-void Teacher::CalculateLastNeuronError(CommonNeuron *outputNeuron)
+void Teacher::CalculateLastNeuronError(CommonNeuron *outputNeuron, double expectedOutput)
 {
     double error = (expectedOutput/*[outputNeuron->GetIndex()]*/ - outputNeuron->GetOutput())*TRANSFER_FUNCTION_DIFFERENTIAL(beta, outputNeuron->GetInput());
     outputNeuron->SetNeuronError(error);
@@ -57,7 +56,7 @@ void Teacher::ChangeWeight(Connection* connection, Neuron* sourceNeuron)
 
 
 
-void Teacher::CalculateEntireNetworkErrorForCurrentExample()
+void Teacher::CalculateEntireNetworkErrorForCurrentExample(double expectedOutput)
 {
     double sumOfErrors = 0;
    for(uint16_t i=0; i<network->GetNeuronsNumber(network->GetLayersNumber()-1); i++)
@@ -128,18 +127,17 @@ void Teacher::BackPropagationAlgorithm()
 
             uint8_t exampleNumber = this->RandomizeTeachingExample(&example);
             input = example[exampleNumber];
-            this->expectedOutput = input.at(3);
             //  Load it in the network
             this->network->LoadNetworkInput(input);
             this->network->CalculateNetworkAnswer();
-            CalculateEntireNetworkErrorForCurrentExample();
+            CalculateEntireNetworkErrorForCurrentExample(expectedOutput[exampleNumber]);
 
             //  If an error for the specified example is bigger then qualification threshold then change weights, otherwise skip changes
             if(this->entireNetworkError > qualificationThreshold)
             {
                 for(uint16_t outputNeuronIndex=0; outputNeuronIndex<this->network->GetNeuronsNumber(this->network->GetLayersNumber()-1); outputNeuronIndex++)
                 {
-                    CalculateLastNeuronError(this->network->GetLayerAt(this->network->GetLayersNumber()-1)->GetNeuronAt(outputNeuronIndex));
+                    CalculateLastNeuronError(this->network->GetLayerAt(this->network->GetLayersNumber()-1)->GetNeuronAt(outputNeuronIndex), this->expectedOutput[exampleNumber]);
                 }
                 for(int16_t layerIndex=network->GetLayersNumber()-2; layerIndex>=0; layerIndex--)
                 {
@@ -163,7 +161,7 @@ void Teacher::BackPropagationAlgorithm()
                 }
                 //  Calculate an error after changes of weights
                 this->network->CalculateNetworkAnswer();
-                CalculateEntireNetworkErrorForCurrentExample();
+                CalculateEntireNetworkErrorForCurrentExample(expectedOutput[exampleNumber]);
             }
             else
                 continue;
@@ -196,8 +194,9 @@ void Teacher::SetImage(Image *image)
 
 /**
  * @brief Teacher::AppendTeachingExampleFromTheLoadedImage  -   This function adds the parameters from the image saved in the Teacher::image* field to the teachingExamples vector
+ * @param - the value of the expectedValue from MainWindow
  */
-void Teacher::AppendTeachingExampleFromTheLoadedImage()
+void Teacher::AppendTeachingExampleFromTheLoadedImage(double expectedOutput)
 {
     //  Create a single vector with input parameters from the image + make space for expected value
     vector <double> inputParameters = vector<double>(this->image->GetHuMoments().size()+2);
@@ -210,6 +209,8 @@ void Teacher::AppendTeachingExampleFromTheLoadedImage()
     inputParameters[inputParameters.size()-1] = this->image->GetMalinowskaCoefficient();
 
     //  Load the input parameters
-    teachingExamples.push_back(inputParameters);
+    this->teachingExamples.push_back(inputParameters);
 
+    //  Set the expected output for the loaded example
+    this->expectedOutput.push_back(expectedOutput);
 }

@@ -4,6 +4,7 @@
 #include "network.h"
 #include <QMainWindow>
 #include "image.h"
+#include "teacher.h"
 
 #define NETWORK_NOT_SAVED   "Sieć nie została zapisana."
 #define NETWORK_NOT_LOADED  "Sieć nie została wczytana."
@@ -21,6 +22,7 @@ public:
     Network network;
     Image  *image;
     Image  *contour;
+    Teacher *teacher;
     ~MainWindow();
 
 private slots:
@@ -41,7 +43,7 @@ private slots:
 
     void on_lE_input3_returnPressed();
 
-    void on_pushButton_clicked();
+    void on_pB_LoadImages_clicked();
 
     void on_hS_Threshold_valueChanged(int value);
 

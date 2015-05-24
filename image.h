@@ -19,6 +19,7 @@ class Image : public ImageParameters
 private:
     string          directory;
     Mat             image;
+    Mat             contourImage;
     string          imageName;
     vector<Mat>     hsv;
     vector <vector <Point> > contoursFound;
@@ -34,15 +35,17 @@ public:
     bool                    LoadImage();
     void                    SetImage(Mat image);
     Mat                     GetImage();
+    Mat                     GetContourImage();
     void                    SetImageName(string name);
     string                  GetImageName();
     void                    Convert2HSV();
     Mat                     GetHSV(uint8_t channel);
     void                    ResizeImage();
-    void                    FindContours(Mat &outputImage);
+    void                    FindContours();
     vector<vector<Point> >  GetContoursFound();
     vector<Point>           GetMaxContour();
     int                     GetMaxContourIndex();
+    void                    HandMadeThreshold(Mat inputImage, int value);
 
     Mat                         AutomaticThreshold(Mat inputImage);
     virtual double              CalculateMalinowskaCoefficient();
@@ -51,5 +54,5 @@ public:
 
 };
 
-  void                    HandMadeThreshold(Mat inputImage, Mat &outputImage, int value);
+
 #endif // IMAGE_H

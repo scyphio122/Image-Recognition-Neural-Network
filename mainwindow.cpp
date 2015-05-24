@@ -15,19 +15,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->teacher = new Teacher;
+    teacher->SetNetwork(&network);
+
     image = new Image;
-    contour = new Image;
+    //contour = new Image;
 
 }
 
 MainWindow::~MainWindow()
 {
-    delete contour;
+    //delete contour;
     delete image;
+    delete teacher;
     delete ui;
 
     image = NULL;
-    contour = NULL;
+    //contour = NULL;
+    teacher = NULL;
 }
 
 void MainWindow::DisplayWarning(string text)
@@ -90,9 +96,10 @@ void MainWindow::on_pB_BudujSiec_clicked()
         else
             DisplayWarning(NETWORK_NOT_LOADED);
     }
-    Teacher teacher;
-    teacher.SetNetwork(&network);
-    teacher.BackPropagationAlgorithm();
+
+
+
+   //! teacher->BackPropagationAlgorithm();
 
 }
 
@@ -144,7 +151,7 @@ void MainWindow::on_lE_input3_returnPressed()
     this->ui->lE_output->setText((output));
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pB_LoadImages_clicked()
 {
     QFileDialog loadDialog;
     QStringList fileNames;
@@ -165,7 +172,7 @@ void MainWindow::on_pushButton_clicked()
         fileNames = loadDialog.selectedFiles();
     if(!fileNames.isEmpty())
     {
-        Mat kontury;
+
         for(int i=0; i<fileNames.size(); i++)
         {
             string directory = fileNames[i].toStdString();
@@ -173,20 +180,19 @@ void MainWindow::on_pushButton_clicked()
             image->SetDirectory(directory);
             image->LoadImage();
             image->Convert2HSV();
-            contour->SetImage(image->AutomaticThreshold(image->GetHSV(V_channel)));
+            image->AutomaticThreshold(image->GetHSV(V_channel));
 
             //bitwise_not(contour->GetImage(), contour->GetImage());
-            erode(contour->GetImage(), contour->GetImage(), 21);
-            morphologyEx(contour->GetImage(), contour->GetImage(), MORPH_OPEN, 3 );
-            medianBlur(contour->GetImage(), contour->GetImage(), 3);
+            erode(image->GetContourImage(), image->GetContourImage(), 21);
+            morphologyEx(image->GetContourImage(), image->GetContourImage(), MORPH_OPEN, 3 );
+            medianBlur(image->GetContourImage(), image->GetContourImage(), 3);
 
 
-            contour->FindContours(kontury);
-            contour->SetImage(kontury);
+            image->FindContours();
 
-            contour->CalculateHuMoments();
-            contour->CalculateMalinowskaCoefficient();
-            vector <double>huMoments = contour->GetHuMoments();
+            image->CalculateHuMoments();
+            image->CalculateMalinowskaCoefficient();
+            vector <double>huMoments = image->GetHuMoments();
             ui->lE_Hu1->setText(QString::number(huMoments[0]));
             ui->lE_Hu2->setText(QString::number(huMoments[1]));
             ui->lE_Hu3->setText(QString::number(huMoments[2]));
@@ -194,13 +200,13 @@ void MainWindow::on_pushButton_clicked()
             ui->lE_Hu5->setText(QString::number(huMoments[4]));
             ui->lE_Hu6->setText(QString::number(huMoments[5]));
             ui->lE_Hu7->setText(QString::number(huMoments[6]));
-            ui->lE_Malinowska->setText(QString::number(contour->GetMalinowskaCoefficient()));
+            ui->lE_Malinowska->setText(QString::number(image->GetMalinowskaCoefficient()));
 
 
             QPixmap obrazWczytany;
             QPixmap kontur;
             ConvertMat2QPixmap(image->GetImage(), obrazWczytany);
-            ConvertMat2QPixmap(contour->GetImage(), kontur);
+            ConvertMat2QPixmap(image->GetContourImage(), kontur);
             ui->lE_originalImage->setPixmap(obrazWczytany);
             ui->lE_Contour->setPixmap(kontur);
 
@@ -212,22 +218,20 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_hS_Threshold_valueChanged(int value)
 {
      QPixmap kontur;
-     Mat kontury;
 
      if(!image->GetHSV(V_channel).empty())
      {
-         HandMadeThreshold(image->GetHSV(V_channel), kontury, value);
+         image->HandMadeThreshold(image->GetHSV(V_channel), value);
 
 
         /* erode(kontury, kontury, 21);
          morphologyEx(kontury, kontury, MORPH_OPEN, 3 );
          medianBlur(kontury, kontury, 3);*/
-         contour->SetImage(kontury);
-         contour->FindContours(kontury);
+         image->FindContours();
 
-         contour->CalculateHuMoments();
-         contour->CalculateMalinowskaCoefficient();
-         vector <double>huMoments = contour->GetHuMoments();
+         image->CalculateHuMoments();
+         image->CalculateMalinowskaCoefficient();
+         vector <double>huMoments = image->GetHuMoments();
          ui->lE_Hu1->setText(QString::number(huMoments[0]));
          ui->lE_Hu2->setText(QString::number(huMoments[1]));
          ui->lE_Hu3->setText(QString::number(huMoments[2]));
@@ -235,9 +239,9 @@ void MainWindow::on_hS_Threshold_valueChanged(int value)
          ui->lE_Hu5->setText(QString::number(huMoments[4]));
          ui->lE_Hu6->setText(QString::number(huMoments[5]));
          ui->lE_Hu7->setText(QString::number(huMoments[6]));
-         ui->lE_Malinowska->setText(QString::number(contour->GetMalinowskaCoefficient()));
+         ui->lE_Malinowska->setText(QString::number(image->GetMalinowskaCoefficient()));
 
-         ConvertMat2QPixmap(kontury, kontur);
+         ConvertMat2QPixmap(image->GetContourImage(), kontur);
          ui->lE_Contour->setPixmap(kontur);
 
      }

@@ -23,7 +23,8 @@ private:
     double      entireNetworkError;
     Network*    network;
 
-    double      expectedOutput;
+    QVector<double>      expectedOutput;
+    vector< vector<double> > teachingExamples;
     Image*      image;
 
     double        CalculateNeuronsError(Neuron*   neuron);
@@ -34,7 +35,7 @@ public:
     Teacher();
     ~Teacher();
 
-    void        AppendTeachingExampleFromTheLoadedImage();
+    void        AppendTeachingExampleFromTheLoadedImage(double expectedOutput);
     double      GetAlpha();
     double      GetEta();
     double      GetEntireNetworkError();
@@ -46,9 +47,9 @@ public:
     void        SetQualificationError(double qualificationThhresholdToSet);
     void        SetOutputError(Neuron *outputNeuron);
     void        SetImage(Image* image);
-    void        CalculateLastNeuronError(CommonNeuron *outputNeuron);
+    void        CalculateLastNeuronError(CommonNeuron *outputNeuron, double expectedOutput);
     void        CalculateCommonNeuronError(Neuron* thisNeuron);
-    void        CalculateEntireNetworkErrorForCurrentExample();
+    void        CalculateEntireNetworkErrorForCurrentExample(double expectedOutput);
     void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
     uint8_t     RandomizeTeachingExample(QVector<QVector<double> > *exampleTable);
