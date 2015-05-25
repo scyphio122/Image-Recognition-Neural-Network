@@ -2,7 +2,8 @@
 #define NETWORK_H
 
 #include "layer.h"
-#include <QVector>
+#include <vector>
+using namespace std;
 
 class FileHandler;
 enum  TransportFunction_e  {UNIPOLAR_SIGMOID_FUNCTION, BIPOLAR_SIGMOID_FUNCTION};
@@ -24,13 +25,14 @@ public:
     bool        CreateNetwork(bool weightsFromFileOrRandom);
     void        SaveNetwork(string directory);
     bool        LoadNetwork(string directory);
-    bool        LoadNetworkInput(QVector <double> inputExample);
+    bool        LoadNetworkInput(vector<double> inputExample);
     void        TestNetwork();
     void        TestConnections();
     void        DeleteNetwork();
     Layer*      GetLayerAt(uint8_t layerIndex);
     uint16_t    GetNeuronsNumber(uint8_t layerIndex);
     void        CalculateNetworkAnswer();
+    double      GetNetworkAnswer();
 };
 
 #endif // NETWORK_H

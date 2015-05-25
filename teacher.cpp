@@ -51,7 +51,7 @@ void Teacher::ChangeWeight(Connection* connection, Neuron* sourceNeuron)
 {
     double weightChange =  this->GetEta()*connection->GetConnectedNeuron()->GetNeuronError()*sourceNeuron->GetOutput();
     double connectionWeight = connection->GetWeight();
-    connection->SetWeight(connectionWeight+weightChange + this->alpha*(connection->GetWeight()-connection->GetPreviousWeight()));
+    connection->SetWeight(connectionWeight+weightChange + this->momentum*(connection->GetWeight()-connection->GetPreviousWeight()));
 }
 
 
@@ -72,51 +72,22 @@ void Teacher::CalculateEntireNetworkErrorForCurrentExample(double expectedOutput
  * @param exampleTable  -   The pointer to the table containing all the known examples to be taught
  * @return  The pointer to the randomized example
  */
-uint8_t Teacher::RandomizeTeachingExample(QVector <QVector<double> > *exampleTable)
+uint8_t Teacher::RandomizeTeachingExample(vector <vector<double> > *exampleTable)
 {
     return (rand()*871+71)%(exampleTable->size());
 }
 
 void Teacher::BackPropagationAlgorithm()
 {
-    QVector<QVector <double> > example;
-    example.resize(5);
-    for(uint8_t i=0; i<5; i++)
-    {
-       example[i].resize(4);
-    }
 
     double entireNetworkErrorForAllExamples;
     teachingCycleCounter = 0;
-    qualificationThreshold = 0.00005;
-    eta = 0.6;
-    alpha = 0.5;
 
-    example[0][0] = 0.95;
-    example[0][1] = 0.1;
-    example[0][2] = 0.1;
-    example[0][3] = 0.1;
-    example[1][0] = 1.05;
-    example[1][1] = 0.2;
-    example[1][2] = 0;
-    example[1][3] = 0.1;
-    example[2][0] = 0.99;
-    example[2][1] = 0.01;
-    example[2][2] = 0.1;
-    example[2][3] = 0.1;
-    example[3][0] = 0.1;
-    example[3][1] = 1;
-    example[3][2] = 0.1;
-    example[3][3] = 0.9;
-    example[4][0] = 0.05;
-    example[4][1] = 0.95;
-    example[4][2] = 0.1;
-    example[4][3] = 0.9;
 
-    QVector<double> input;
-    input.resize(4);
+    vector<double> input;
+    input.resize(this->teachingExamples[0].size());
     //  Get number of teaching examples
-    uint16_t examplesNumber = example.size();
+    uint16_t examplesNumber = this->teachingExamples.size();
     uint16_t notRejectedExampleCounter = 0;
     do
     {
@@ -125,8 +96,8 @@ void Teacher::BackPropagationAlgorithm()
         {
             //  Choose an example
 
-            uint8_t exampleNumber = this->RandomizeTeachingExample(&example);
-            input = example[exampleNumber];
+            uint8_t exampleNumber = this->RandomizeTeachingExample(&this->teachingExamples);
+            input = this->teachingExamples[exampleNumber];
             //  Load it in the network
             this->network->LoadNetworkInput(input);
             this->network->CalculateNetworkAnswer();
@@ -176,9 +147,8 @@ void Teacher::BackPropagationAlgorithm()
         notRejectedExampleCounter = 0;
         entireNetworkErrorForAllExamples = entireNetworkErrorForAllExamples/(examplesNumber);
         cout<<"\nCalkowity blad sieci dla wszystkich przykladow: "<<entireNetworkErrorForAllExamples+0<<endl;
-    }while(entireNetworkErrorForAllExamples > qualificationThreshold && teachingCycleCounter < 200000);
+    }while(entireNetworkErrorForAllExamples > qualificationThreshold && teachingCycleCounter < maxTeachingCycleCounter);
 
-    example.clear();
 
 }
 
@@ -198,8 +168,8 @@ void Teacher::SetImage(Image *image)
  */
 void Teacher::AppendTeachingExampleFromTheLoadedImage(double expectedOutput)
 {
-    //  Create a single vector with input parameters from the image + make space for expected value
-    vector <double> inputParameters = vector<double>(this->image->GetHuMoments().size()+2);
+    //  Create a single vector with input parameters from the image
+    vector <double> inputParameters = vector<double>(this->image->GetHuMoments().size()+1);
     //  Load hu moments
     for(unsigned int i=0; i<inputParameters.size()-1; i++)
     {
@@ -213,4 +183,31 @@ void Teacher::AppendTeachingExampleFromTheLoadedImage(double expectedOutput)
 
     //  Set the expected output for the loaded example
     this->expectedOutput.push_back(expectedOutput);
+
+
+}
+
+uint16_t    Teacher::GetExpectedOutputSize()
+{
+    return this->expectedOutput.size();
+}
+
+
+void Teacher::SetMaxTeachingCycleCounter(uint32_t    maxTeachingCycleCounterToSet)
+{
+    this->maxTeachingCycleCounter = maxTeachingCycleCounterToSet;
+}
+
+void Teacher::SetMomentum(double momentum)
+{
+    this->momentum = momentum;
+}
+void Teacher::SetEta(double eta)
+{
+    this->eta = eta;
+}
+
+void Teacher::SetQualificationError(double qualificationThhresholdToSet)
+{
+    this->qualificationThreshold = qualificationThhresholdToSet;
 }

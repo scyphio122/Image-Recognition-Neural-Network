@@ -23,12 +23,15 @@ public:
     Image  *image;
     Image  *contour;
     Teacher *teacher;
+    QStringList imageFileNames;
+    uint16_t    teachingImageCounter;
     ~MainWindow();
 
 private slots:
     void DisplayWarning(string text);
 
     void ConvertMat2QPixmap(Mat image, QPixmap &pixmap);
+    void LoadImages(string directory);
 
     void on_pB_UsunSiec_pressed();
 
@@ -37,15 +40,38 @@ private slots:
     void on_pB_SaveNetwork_clicked();
 
 
-    void on_le_input1_returnPressed();
+   /* void on_le_input1_returnPressed();
 
     void on_lE_input2_returnPressed();
 
     void on_lE_input3_returnPressed();
-
+*/
     void on_pB_LoadImages_clicked();
 
     void on_hS_Threshold_valueChanged(int value);
+
+    void on_pB_nextImage_clicked();
+
+    void on_lE_ExpectedOutput_returnPressed();
+
+    void on_pB_startTeaching_clicked();
+
+    void on_pB_Classify_clicked();
+
+    void on_cB_Teaching_toggled(bool checked);
+
+
+    void on_lE_beta_textChanged(const QString &arg1);
+
+    void on_lE_eta_textChanged(const QString &arg1);
+
+    void on_lE_momentum_textChanged(const QString &arg1);
+
+    void on_lE_networkErrorThreshold_textChanged(const QString &arg1);
+
+    void on_lE_maxTeacyingCycleNumber_textChanged(const QString &arg1);
+
+    void on_lE_ExpectedOutput_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

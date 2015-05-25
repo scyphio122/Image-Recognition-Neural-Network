@@ -18,9 +18,11 @@ private:
     QIntValidator *lE_layersValidator;
 
     Network* network;
+    bool    proceedWithLoading;
 
 public:
     explicit Create_Network( Network *network, QWidget *parent);
+    bool GetProceedWithLoading();
     ~Create_Network();
 
 private slots:
@@ -33,6 +35,7 @@ private slots:
     void on_pb_Cancel_clicked();
 
     void on_pB_Retry_clicked();
+
 
 private:
     Ui::Create_Network *ui;

@@ -70,7 +70,10 @@ void Network::SetNeuronsNumber(uint8_t layerIndex, uint16_t number)
  */
 void Network::ClearAllNeuronsNumber()
 {
-    this->neuronsNumber.clear();
+    if(!this->neuronsNumber.empty())
+        this->neuronsNumber.clear();
+    else
+        return;
 }
 
 /**
@@ -276,9 +279,9 @@ uint16_t    Network::GetNeuronsNumber(uint8_t layerIndex)
  * @param inputExample  -   The QVector which contains params to recognise
  * @return  -   true if loading was successful; false when inputExample size and neurons number in the input layer did not match.
  */
-bool Network::LoadNetworkInput(QVector <double> inputExample)
+bool Network::LoadNetworkInput(vector <double> inputExample)
 {
-    if(inputExample.size()-1 != this->GetLayerAt(0)->GetNeuronsNumber())
+    if(inputExample.size() != this->GetLayerAt(0)->GetNeuronsNumber())
         return false;
 
     for(uint16_t neuronIndex=0; neuronIndex <this->GetLayerAt(0)->GetNeuronsNumber(); neuronIndex++)
@@ -318,4 +321,9 @@ void Network::CalculateNetworkAnswer()
 
         }
     }
+}
+
+double Network::GetNetworkAnswer()
+{
+    return this->GetLayerAt(this->layersNumber-1)->GetNeuronAt(0)->GetOutput();
 }

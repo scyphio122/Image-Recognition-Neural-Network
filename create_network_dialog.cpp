@@ -14,6 +14,7 @@ Create_Network::Create_Network(Network* network, QWidget *parent) :
     ui->lE_LiczbaNeuronow->setValidator(lE_neuronsValidator);
 
     this->network = network;
+    proceedWithLoading = true;
 }
 Create_Network::~Create_Network()
 {
@@ -78,6 +79,7 @@ void Create_Network::on_pb_Cancel_clicked()
 {
     this->network->ClearAllNeuronsNumber();
     this->network->SetLayersNumber(0);
+    proceedWithLoading = false;
     this->close();
 }
 
@@ -86,10 +88,16 @@ void Create_Network::on_pB_Retry_clicked()
 {
     this->network->ClearAllNeuronsNumber();
     this->network->SetLayersNumber(0);
+    proceedWithLoading = false;
     ui->lE_LiczbaWarstw->setEnabled(true);
     ui->sB_NrWarstwy->setValue(1);
     ui->sB_NrWarstwy->setEnabled(false);
     ui->lE_LiczbaNeuronow->clear();
     ui->lE_LiczbaNeuronow->setEnabled(false);
     ui->pB_Accept->setEnabled(false);
+}
+
+bool Create_Network::GetProceedWithLoading()
+{
+    return this->proceedWithLoading;
 }
