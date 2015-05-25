@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     lE_betaValid           = new QDoubleValidator   (0, 1, 2, ui->lE_beta);
     lE_momentumValid       = new QDoubleValidator (0, 1, 2, ui->lE_momentum);
     lE_etaValid            = new QDoubleValidator (0, 1, 2, ui->lE_eta);
-    lE_maxTeachingCounterThreshValid   = new QIntValidator (1, 4294967295, ui->lE_maxTeacyingCycleNumber);
+    lE_maxTeachingCounterThreshValid   = new QIntValidator (0, 400000000, ui->lE_maxTeacyingCycleNumber);
     lE_expectedOutputValid = new QDoubleValidator (-1, 1, 4, ui->lE_ExpectedOutput);
 
     ui->lE_ExpectedOutput->setValidator(lE_expectedOutputValid);
@@ -207,19 +207,19 @@ void MainWindow::on_pB_LoadImages_clicked()
     if(!imageFileNames.isEmpty())
     {
         string directory = imageFileNames[0].toStdString();
-        //LoadImages(directory);
-        if(ui->gB_teachingParameters->isEnabled())
+        LoadImages(directory);
+       /* if(ui->gB_teachingParameters->isEnabled())
             on_pB_nextImage_clicked();
         else
-            LoadImages(directory);
+            LoadImages(directory);*/
+        if(!ui->cB_Teaching->isChecked())
+             ui->pB_Classify->setEnabled(true);
+        else
+        {
+            ui->pB_nextImage->setEnabled(true);
+        }
     }
-    if(!ui->cB_Teaching->isChecked())
-         ui->pB_Classify->setEnabled(true);
-    else
-    {
-        ui->pB_nextImage->setEnabled(true);
 
-    }
 }
 
 void MainWindow::on_hS_Threshold_valueChanged(int value)
@@ -334,16 +334,18 @@ void MainWindow::on_pB_nextImage_clicked()
     }
     if(teachingImageCounter <imageFileNames.size())
     {
-        LoadImages(imageFileNames[teachingImageCounter].toStdString());
+
         double expectedOutput = ui->lE_ExpectedOutput->text().toDouble();
         teacher->SetImage(this->image);
         this->teacher->AppendTeachingExampleFromTheLoadedImage(expectedOutput);
         teachingImageCounter++;
+        if(teachingImageCounter <imageFileNames.size())
+            LoadImages(imageFileNames[teachingImageCounter].toStdString());
+        else
+            ui->pB_startTeaching->setEnabled(true);
     }
     else
     {
-        if(!ui->pB_startTeaching->isEnabled())
-            ui->pB_startTeaching->setEnabled(true);
         teachingImageCounter = 0;
     }
 }
@@ -397,6 +399,7 @@ void MainWindow::on_cB_Teaching_toggled(bool checked)
     {
         ui->gB_teachingParameters->setEnabled(true);
         ui->pB_Classify->setEnabled(false);
+        ui->lE_output->clear();
     }
     else
     {
@@ -420,10 +423,9 @@ void MainWindow::on_cB_Teaching_toggled(bool checked)
 void MainWindow::on_lE_beta_textChanged(const QString &arg1)
 {
     QString text = arg1;
-    double value = text.toDouble();
     int pos =  ui->lE_beta->cursorPosition();
     QValidator::State state = ui->lE_beta->validator()->validate(text, pos);
-    if(state == QValidator::Invalid || (state == QValidator::Intermediate && (text.toStdString() != "-")))
+    if(state == QValidator::Invalid || (state == QValidator::Intermediate))
     {
         ui->lE_beta->backspace();
     }
@@ -434,7 +436,7 @@ void MainWindow::on_lE_eta_textChanged(const QString &arg1)
     QString text = arg1;
     int pos =  ui->lE_eta->cursorPosition();
     QValidator::State state = ui->lE_eta->validator()->validate(text, pos);
-    if(state == QValidator::Invalid || (state == QValidator::Intermediate && (text.toStdString() != "-")))
+    if(state == QValidator::Invalid || (state == QValidator::Intermediate))
     {
         ui->lE_eta->backspace();
     }
@@ -445,7 +447,7 @@ void MainWindow::on_lE_momentum_textChanged(const QString &arg1)
     QString text = arg1;
     int pos =  ui->lE_momentum->cursorPosition();
     QValidator::State state = ui->lE_momentum->validator()->validate(text, pos);
-    if(state == QValidator::Invalid || (state == QValidator::Intermediate && (text.toStdString() != "-")))
+    if(state == QValidator::Invalid || (state == QValidator::Intermediate))
     {
         ui->lE_momentum->backspace();
     }
@@ -457,7 +459,7 @@ void MainWindow::on_lE_networkErrorThreshold_textChanged(const QString &arg1)
     QString text = arg1;
     int pos =  ui->lE_networkErrorThreshold->cursorPosition();
     QValidator::State state = ui->lE_networkErrorThreshold->validator()->validate(text, pos);
-    if(state == QValidator::Invalid || (state == QValidator::Intermediate && (text.toStdString() != "-")))
+    if(state == QValidator::Invalid || (state == QValidator::Intermediate))
     {
         ui->lE_networkErrorThreshold->backspace();
     }
@@ -468,7 +470,7 @@ void MainWindow::on_lE_maxTeacyingCycleNumber_textChanged(const QString &arg1)
     QString text = arg1;
     int pos =  ui->lE_maxTeacyingCycleNumber->cursorPosition();
     QValidator::State state = ui->lE_maxTeacyingCycleNumber->validator()->validate(text, pos);
-    if(state == QValidator::Invalid || (state == QValidator::Intermediate && (text.toStdString() != "-")))
+    if(state == QValidator::Invalid || (state == QValidator::Intermediate))
     {
         ui->lE_maxTeacyingCycleNumber->backspace();
     }
@@ -485,3 +487,15 @@ void MainWindow::on_lE_ExpectedOutput_textChanged(const QString &arg1)
         ui->lE_ExpectedOutput->backspace();
     }
 }
+
+void MainWindow::UpdateProgressBar()
+{
+    this->ui->progressBar->setValue(this->teacher->GetProgress());
+}
+
+void MainWindow::UpdateNetworkError()
+{
+    this->ui->lE_CurrentNetworkError->setText(QString::number(this->teacher->GetEntireNetworkError()));
+}
+
+

@@ -23,6 +23,7 @@ private:
     double      connectionError;
     double      entireNetworkError;
     Network*    network;
+    uint8_t     progress;
 
     QVector<double>      expectedOutput;
     vector< vector<double> > teachingExamples;
@@ -56,6 +57,8 @@ public:
     uint32_t    GetTeachingCycleCounter();
     uint8_t     RandomizeTeachingExample(vector<vector<double> > *exampleTable);
     void        BackPropagationAlgorithm();
+    void        CalculateProgress(unsigned long long teachingCounter);
+    uint8_t     GetProgress();
 
 
 };

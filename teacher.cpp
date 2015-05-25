@@ -211,3 +211,13 @@ void Teacher::SetQualificationError(double qualificationThhresholdToSet)
 {
     this->qualificationThreshold = qualificationThhresholdToSet;
 }
+
+void Teacher::CalculateProgress(unsigned long long int teachingCounter)
+{
+    this->progress = (uint8_t)((teachingCounter/this->maxTeachingCycleCounter)*100);
+}
+
+uint8_t Teacher::GetProgress()
+{
+    return this->progress;
+}

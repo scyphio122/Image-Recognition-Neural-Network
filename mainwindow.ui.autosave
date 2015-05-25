@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>940</width>
+    <height>864</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QGroupBox" name="gB_ObslugaSieci">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>910</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Obsługa sieci</string>
+    </property>
+    <widget class="QGroupBox" name="gB_TworzenieSieci">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>881</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Tworzenie sieci</string>
+     </property>
+     <widget class="QRadioButton" name="rB_WczytajSiecZPliku">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>40</y>
+        <width>201</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Wczytaj istniejącą sieć z pliku</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rB_StworzSiecRecznie">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>40</y>
+        <width>141</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Stwórz nową sieć ręcznie</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Wybierz sposób tworzenia sieci:</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="pB_UsunSiec">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>100</y>
+       <width>285</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Usuń zbudowaną sieć</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pB_BudujSiec">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>285</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wczytaj/Buduj sieć</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pB_SaveNetwork">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>100</y>
+       <width>285</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Zapisz sieć</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="gB_LoadingImages">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>911</width>
+      <height>651</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Wczytywanie obrazów</string>
+    </property>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>150</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1.</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu7">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>390</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu6">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>350</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>430</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Współczynnik Malinowskiej:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lE_Contour">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>350</y>
+       <width>320</width>
+       <height>240</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu5">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>310</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu4">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>270</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>270</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>4.</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Malinowska">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>460</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu3">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>230</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="textBrowser_2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>350</y>
+       <width>320</width>
+       <height>240</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="cB_Teaching">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>130</y>
+       <width>72</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Uczenie</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>390</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>7.</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pB_LoadImages">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>621</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wczytaj obraz do rozpoznania/Zbiór obrazów uczących</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>190</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>2.</string>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="textBrowser">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>110</y>
+       <width>320</width>
+       <height>240</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>230</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>3.</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="hS_Threshold">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>610</y>
+       <width>651</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>ArrowCursor</cursorShape>
+     </property>
+     <property name="maximum">
+      <number>255</number>
+     </property>
+     <property name="value">
+      <number>128</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksBelow</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>120</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hu moments:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu2">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>190</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>310</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>5.</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lE_Hu1">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>150</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>350</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>6.</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pB_Classify">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>510</y>
+       <width>211</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Zaklasyfikuj</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lE_originalImage">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>110</y>
+       <width>320</width>
+       <height>240</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="gB_teachingParameters">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>150</y>
+       <width>241</width>
+       <height>341</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Parametry uczenia i zbioru uczącego</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <widget class="QLineEdit" name="lE_beta">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.6</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Współczynnik β: </string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Współczynnik uczenia η:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_eta">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.6</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>90</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Współczynnik momentum:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_momentum">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.5</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Próg błędu sieci:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_networkErrorThreshold">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>120</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.000001</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Maksymalna liczba cykli:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_maxTeacyingCycleNumber">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>150</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>10000000</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Wartość oczekiwana:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_ExpectedOutput">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>200</y>
+        <width>113</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pB_startTeaching">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>240</y>
+        <width>80</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Start uczenia</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pB_nextImage">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>240</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Wczytaj parametry</string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>280</y>
+        <width>161</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLineEdit" name="lE_output">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>510</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <zorder>label_10</zorder>
+    <zorder>lE_Hu7</zorder>
+    <zorder>lE_Hu6</zorder>
+    <zorder>label_17</zorder>
+    <zorder>lE_Hu5</zorder>
+    <zorder>lE_Hu4</zorder>
+    <zorder>label_13</zorder>
+    <zorder>lE_Malinowska</zorder>
+    <zorder>lE_Hu3</zorder>
+    <zorder>textBrowser_2</zorder>
+    <zorder>cB_Teaching</zorder>
+    <zorder>label_16</zorder>
+    <zorder>pB_LoadImages</zorder>
+    <zorder>label_11</zorder>
+    <zorder>textBrowser</zorder>
+    <zorder>label_12</zorder>
+    <zorder>hS_Threshold</zorder>
+    <zorder>label_9</zorder>
+    <zorder>lE_Hu2</zorder>
+    <zorder>label_14</zorder>
+    <zorder>lE_Hu1</zorder>
+    <zorder>label_15</zorder>
+    <zorder>pB_Classify</zorder>
+    <zorder>lE_originalImage</zorder>
+    <zorder>gB_teachingParameters</zorder>
+    <zorder>lE_output</zorder>
+    <zorder>lE_Contour</zorder>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>940</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
