@@ -17,7 +17,7 @@ Classifier::~Classifier()
 void Classifier::CalculateMinimalDistance(double networkOutput)
 {
     this->minimalDistance = 0xFFFFFFFF;
-    double  tem
+    double  temp;
     for(uint16_t i=0; i<taughtObjects.size(); i++)
     {
         temp = fabs(networkOutput-this->taughtObjects[i].expectedOutputValue);
@@ -36,4 +36,18 @@ string Classifier::GetClassifiedObjectName()
         return this->taughtObjects[classifiedObjectIndex].name;
 }
 
+void    Classifier::AddTaughtObject(object example)
+{
+    if(!taughtObjects.empty())
+    {
+        for(uint16_t i=0; i<taughtObjects.size(); i++)
+        {
+            if(example.name == taughtObjects[i].name)
+               return;
+        }
+    }
+    this->taughtObjects.append(example);
 
+
+    return;
+}

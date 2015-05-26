@@ -12,10 +12,7 @@ CommonNeuron::~CommonNeuron()
     this->ClearConnections();
 }
 
-void CommonNeuron::ConnectNeuronsFromPreviousLayer(Layer* previousLayer)
-{
 
-}
 /**
  * @brief CommonNeuron::CreateSourceNeuronConnection    -   This function is called in order to add an connection to the end of the sourceConnectionsList
  * @param connection    -   The pointer to the connection to add

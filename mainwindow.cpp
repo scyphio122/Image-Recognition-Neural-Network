@@ -12,8 +12,8 @@
 #include <stdint.h>
 #include <QTime>
 #include "updatethread.h"
+#include "classifier.h"
 
-extern QVector <double> object;                     // DEBUG
 
 QDoubleValidator *lE_errorThresholdValid;
 QDoubleValidator *lE_betaValid;
@@ -181,6 +181,7 @@ void MainWindow::on_pB_SaveNetwork_clicked()
     }
     else
         DisplayWarning(NETWORK_NOT_SAVED);
+
 }
 
 void MainWindow::on_pB_LoadImages_clicked()
@@ -336,8 +337,12 @@ void MainWindow::on_pB_nextImage_clicked()
     }
     if(teachingImageCounter <imageFileNames.size())
     {
-
+        string objectName = ui->lE_ObjectName->text().toStdString();
         double expectedOutput = ui->lE_ExpectedOutput->text().toDouble();
+        object teachingObject;
+        teachingObject.name = objectName;
+        teachingObject.expectedOutputValue = expectedOutput;
+        this->network.AddTaughtObject(teachingObject);
         teacher->SetImage(this->image);
         this->teacher->AppendTeachingExampleFromTheLoadedImage(expectedOutput);
         teachingImageCounter++;
@@ -359,6 +364,7 @@ void MainWindow::on_lE_ExpectedOutput_returnPressed()
 
 void MainWindow::on_pB_startTeaching_clicked()
 {
+     network.SetTaught();
     double value;
     value = ui->lE_momentum->text().toDouble();
     this->teacher->SetMomentum(value);
@@ -386,11 +392,13 @@ void MainWindow::on_pB_Classify_clicked()
     }
     input[network.GetNeuronsNumber(0)-1] = image->GetMalinowskaCoefficient();
 
+
     this->network.LoadNetworkInput(input);
     network.CalculateNetworkAnswer();
+    network.CalculateMinimalDistance(network.GetNetworkAnswer());
 
+    this->ui->lE_Classifiation->setText(QString::fromStdString(network.GetClassifiedObjectName()));
     this->ui->lE_output->setText(QString::number(network.GetNetworkAnswer()));
-
 }
 
 

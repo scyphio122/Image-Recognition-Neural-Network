@@ -1,7 +1,7 @@
 #include "neuron.h"
 #include "network.h"
 #include <cmath>
-extern enum TransportFunction_e transportFunction;
+//extern enum TransportFunction_e transportFunction;
 
 extern const double beta;
 

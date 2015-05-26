@@ -49,6 +49,7 @@ public:
     uint16_t    ConnectionsSize();
     void        LoadSignalInNextNeurons(double signal);
 
+
 };
 
 #endif // NEURON_H

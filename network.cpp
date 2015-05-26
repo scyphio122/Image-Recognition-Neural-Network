@@ -2,14 +2,14 @@
 #include <iostream>
 #include <QString>
 #include <QVector>
+#include "classifier.h"
 using namespace std;
 
-QVector <double> object;
-enum  TransportFunction_e transportFunction;
+//enum  TransportFunction_e transportFunction;
 Network::Network()
 {
     layersNumber = 0;
-    object.resize(4);           // DEBUG
+    this->networkTaught = false;
 }
 
 Network::~Network()
@@ -158,6 +158,18 @@ void Network::SaveNetwork(string directory)
             SaveData("\n");
         }
     }
+    if(this->CheckIfTaught())
+    {
+        SaveData("nauczona");
+        SaveData("\n");
+        for(uint16_t i=0; i<taughtObjects.size();i++)
+        {
+            dataToSave = QString::number(taughtObjects[i].expectedOutputValue);
+            SaveData(dataToSave.toStdString());
+            SaveData(taughtObjects[i].name);
+            SaveData("\n");
+        }
+    }
     this->saveToFile->flush();
     this->saveToFile->close();
     delete this->saveToFile;
@@ -198,6 +210,21 @@ bool Network::LoadNetwork(string directory)
     }
     this->CreateNetwork(CONNECTION_WEIGHT_FROM_FILE);
 
+
+    if(CheckIfLoadedNetworkTaught())
+    {
+        string taughtObjectsValue;
+        string taughtObjectsName;
+        object taughtObject;
+        do
+        {
+            LoadData(taughtObjectsValue);
+            taughtObject.expectedOutputValue = atof(taughtObjectsValue.c_str());
+            LoadData(taughtObjectsName);
+            taughtObject.name = taughtObjectsName;
+            this->AddTaughtObject(taughtObject);
+        }while(!this->loadFromFile->eof());
+    }
 
 
 
@@ -326,4 +353,24 @@ void Network::CalculateNetworkAnswer()
 double Network::GetNetworkAnswer()
 {
     return this->GetLayerAt(this->layersNumber-1)->GetNeuronAt(0)->GetOutput();
+}
+
+bool Network::CheckIfLoadedNetworkTaught()
+{
+    string teachingStatus;
+    LoadData(teachingStatus);
+    if(teachingStatus == "nauczona")
+        return true;
+    else
+        return false;
+}
+
+bool Network::CheckIfTaught()
+{
+    return this->networkTaught;
+}
+
+void Network::SetTaught()
+{
+    this->networkTaught = true;
 }

@@ -5,7 +5,7 @@
 /*UpdateThread::UpdateThread()
 {
 
-}/*
+}*//*
 UpdateThread::UpdateThread(Teacher* teacher, Ui::MainWindow* ui)
 {
     this->ui = ui;
