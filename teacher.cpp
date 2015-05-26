@@ -211,6 +211,10 @@ void Teacher::SetQualificationError(double qualificationThhresholdToSet)
 {
     this->qualificationThreshold = qualificationThhresholdToSet;
 }
+double  Teacher::GetQualificationThreshold()
+{
+    return this->qualificationThreshold;
+}
 
 void Teacher::CalculateProgress(unsigned long long int teachingCounter)
 {
@@ -220,4 +224,8 @@ void Teacher::CalculateProgress(unsigned long long int teachingCounter)
 uint8_t Teacher::GetProgress()
 {
     return this->progress;
+}
+double Teacher::GetEntireNetworkError()
+{
+    return this->entireNetworkError;
 }

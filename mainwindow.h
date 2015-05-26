@@ -33,19 +33,14 @@ private slots:
     void ConvertMat2QPixmap(Mat image, QPixmap &pixmap);
     void LoadImages(string directory);
 
+    void SecondThread();
+
     void on_pB_UsunSiec_pressed();
 
     void on_pB_BudujSiec_clicked();
 
     void on_pB_SaveNetwork_clicked();
 
-
-   /* void on_le_input1_returnPressed();
-
-    void on_lE_input2_returnPressed();
-
-    void on_lE_input3_returnPressed();
-*/
     void on_pB_LoadImages_clicked();
 
     void on_hS_Threshold_valueChanged(int value);
@@ -72,6 +67,10 @@ private slots:
     void on_lE_maxTeacyingCycleNumber_textChanged(const QString &arg1);
 
     void on_lE_ExpectedOutput_textChanged(const QString &arg1);
+
+    void UpdateProgressBar();
+    void UpdateNetworkError();
+
 
 private:
     Ui::MainWindow *ui;

@@ -454,7 +454,7 @@
      <property name="geometry">
       <rect>
        <x>630</x>
-       <y>480</y>
+       <y>530</y>
        <width>211</width>
        <height>41</height>
       </rect>
@@ -485,7 +485,7 @@
        <x>610</x>
        <y>150</y>
        <width>241</width>
-       <height>311</height>
+       <height>371</height>
       </rect>
      </property>
      <property name="title">
@@ -671,12 +671,67 @@
        <rect>
         <x>20</x>
         <y>240</y>
-        <width>101</width>
+        <width>111</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Następny obrazek</string>
+       <string>Wczytaj parametry</string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>290</y>
+        <width>161</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>270</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Progres uczenia:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_CurrentNetworkError">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>330</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>330</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Aktualny błąd sieci:</string>
       </property>
      </widget>
     </widget>

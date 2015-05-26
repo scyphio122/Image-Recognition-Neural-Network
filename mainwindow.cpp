@@ -10,6 +10,8 @@
 #include <QCursor>
 #include <QValidator>
 #include <stdint.h>
+#include <QTime>
+#include "updatethread.h"
 
 extern QVector <double> object;                     // DEBUG
 
@@ -498,4 +500,11 @@ void MainWindow::UpdateNetworkError()
     this->ui->lE_CurrentNetworkError->setText(QString::number(this->teacher->GetEntireNetworkError()));
 }
 
-
+void MainWindow::SecondThread()
+{
+    /*UpdateThread newThread = UpdateThread(this->teacher, this->ui);
+    newThread.start();
+    newThread.quit();
+    newThread.wait(100);
+    newThread.terminate();*/
+}

@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     create_network_dialog.cpp \
     teacher.cpp \
     image.cpp \
-    imageparameters.cpp
+    imageparameters.cpp \
+    updatethread.cpp \
+    classifier.cpp
 
 HEADERS  += mainwindow.h \
     layer.h \
@@ -37,7 +39,9 @@ HEADERS  += mainwindow.h \
     create_network_dialog.h \
     teacher.h \
     image.h \
-    imageparameters.h
+    imageparameters.h \
+    updatethread.h \
+    classifier.h
 
 FORMS    += mainwindow.ui \
     create_network.ui
