@@ -292,9 +292,6 @@ void MainWindow::LoadImages(string directory)
     image->AutomaticThreshold(image->GetHSV(V_channel));
 
     //bitwise_not(contour->GetImage(), contour->GetImage());
-    erode(image->GetContourImage(), image->GetContourImage(), 21);
-    morphologyEx(image->GetContourImage(), image->GetContourImage(), MORPH_OPEN, 3 );
-    medianBlur(image->GetContourImage(), image->GetContourImage(), 3);
 
 
     image->FindContours();

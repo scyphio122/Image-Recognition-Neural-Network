@@ -137,6 +137,11 @@ void Image::FindContours()
 {
     Mat temp;    //  temp Mat
 
+    //  Prepare image fot finding contours
+    erode(this->GetContourImage(), this->GetContourImage(), 21);
+    morphologyEx(this->GetContourImage(), this->GetContourImage(), MORPH_OPEN, 3 );
+    medianBlur(this->GetContourImage(), this->GetContourImage(), 3);
+
     //  Copy the image to the created Mat contour because findContour changes the image
     this->contourImage.copyTo(temp);
 
@@ -153,8 +158,7 @@ void Image::FindContours()
 
     //  Set the contour color to white
     Scalar color = Scalar( 255, 255, 255 );
-    /*for( unsigned int i = 0; i< contours.size(); i++ )
-        drawContours( outputImage, contours, i, color, 1, 8, hierarchy, 0, Point() );*/
+
     //  draw the biggest contour found
     drawContours( this->contourImage, this->contoursFound, this->GetMaxContourIndex() , color, 1, 8, hierarchy, 0, Point() );
     return;

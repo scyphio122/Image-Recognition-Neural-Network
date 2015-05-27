@@ -32,12 +32,15 @@ void Create_Network::on_lE_LiczbaWarstw_returnPressed()
     bool conversion = false;
     uint8_t value = ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10);
     this->network->SetLayersNumber(value);
-    ui->sB_NrWarstwy->setMaximum(value);
+    ui->sB_NrWarstwy->setMinimum(2);
+    ui->sB_NrWarstwy->setMaximum(value-1);
     ui->lE_LiczbaNeuronow->setEnabled(true);
     ui->sB_NrWarstwy->setEnabled(true);
     ui->lE_LiczbaWarstw->setEnabled(false);
-    ui->sB_NrWarstwy->setValue(1);
+    ui->sB_NrWarstwy->setValue(2);
     ui->lE_LiczbaNeuronow->setFocus();
+    //  Set the first layer's neurons number
+    this->network->SetNeuronsNumber(0, 8);
 }
 /**
  * @brief Create_Network::on_lE_LiczbaNeuronow_returnPressed
@@ -51,7 +54,7 @@ void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
         //
         this->network->SetNeuronsNumber(ui->sB_NrWarstwy->value()-1, number);
 
-        if((uint16_t)ui->sB_NrWarstwy->value() < ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10))
+        if((uint16_t)ui->sB_NrWarstwy->value() < (ui->lE_LiczbaWarstw->text().toUInt(&conversion, 10) -1))
         {
             int value = (ui->sB_NrWarstwy->value());
             ui->sB_NrWarstwy->setValue(++value);
@@ -68,6 +71,8 @@ void Create_Network::on_lE_LiczbaNeuronow_returnPressed()
 
 void Create_Network::on_pB_Accept_clicked()
 {
+
+     this->network->SetNeuronsNumber(this->network->GetLayersNumber()-1, 1);
      this->network->CreateNetwork(CONNECTION_WEIGHT_RANDOM);
     //this->network->TestNetwork();
     //this->network->SaveNetwork("C:/Users/Konrad/Desktop/network.txt");
