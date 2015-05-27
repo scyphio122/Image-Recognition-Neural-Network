@@ -28,7 +28,7 @@ public:
 
 
     Image();
-    ~Image();
+    virtual ~Image();
 
     void                    SetDirectory(string directory);
     string                  GetDirectory();

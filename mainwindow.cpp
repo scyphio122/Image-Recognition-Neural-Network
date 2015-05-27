@@ -7,13 +7,11 @@
 #include "image.h"
 #include <highgui/highgui.hpp>
 #include <QWaitCondition>
-#include <QCursor>
 #include <QValidator>
 #include <stdint.h>
-#include <QTime>
-#include "updatethread.h"
 #include "classifier.h"
-
+#include <QTimer>
+#include <QTime>
 
 QDoubleValidator *lE_errorThresholdValid;
 QDoubleValidator *lE_betaValid;
@@ -23,27 +21,26 @@ QIntValidator    *lE_maxTeachingCounterThreshValid;
 QDoubleValidator *lE_expectedOutputValid;
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    this->teacher = new Teacher;
-    teacher->SetNetwork(&network);
-
-    image = new Image;
-    QLocale local;
-
-
     teachingImageCounter = 0;
-    lE_errorThresholdValid = new QDoubleValidator (0, 2, 6, ui->lE_networkErrorThreshold);
+    lE_errorThresholdValid = new QDoubleValidator (0, 2, 10, ui->lE_networkErrorThreshold);
     lE_betaValid           = new QDoubleValidator   (0, 1, 2, ui->lE_beta);
     lE_momentumValid       = new QDoubleValidator (0, 1, 2, ui->lE_momentum);
     lE_etaValid            = new QDoubleValidator (0, 1, 2, ui->lE_eta);
     lE_maxTeachingCounterThreshValid   = new QIntValidator (0, 400000000, ui->lE_maxTeacyingCycleNumber);
     lE_expectedOutputValid = new QDoubleValidator (-1, 1, 4, ui->lE_ExpectedOutput);
 
+    lE_errorThresholdValid->setLocale(QLocale::C);
+    lE_betaValid->setLocale(QLocale::C);
+    lE_momentumValid->setLocale(QLocale::C);
+    lE_errorThresholdValid->setLocale(QLocale::C);
+    lE_expectedOutputValid->setLocale(QLocale::C);
     ui->lE_ExpectedOutput->setValidator(lE_expectedOutputValid);
     ui->lE_eta->setValidator(lE_etaValid);
     ui->lE_beta->setValidator(lE_betaValid);
@@ -55,15 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    //delete contour;
-    delete image;
-    delete teacher;
-    delete ui;
-
-    image = NULL;
-    //contour = NULL;
-    teacher = NULL;
-
     delete lE_errorThresholdValid;
     delete lE_betaValid;
     delete lE_momentumValid;
@@ -71,6 +59,16 @@ MainWindow::~MainWindow()
     delete lE_maxTeachingCounterThreshValid;
     delete lE_expectedOutputValid;
 }
+
+void MainWindow::GetNetworkTeacherImage(Network *network, Teacher* teacher, Image* image)
+{
+    this->network = network;
+    this->teacher = teacher;
+    this->image = image;
+
+    this->teacher->SetNetwork(network);
+}
+
 
 void MainWindow::DisplayWarning(string text)
 {
@@ -84,9 +82,9 @@ void MainWindow::DisplayWarning(string text)
 
 void MainWindow::on_pB_UsunSiec_pressed()
 {
-    this->network.DeleteNetwork();
-    network.ClearAllNeuronsNumber();
-    network.SetLayersNumber(0);
+    this->network->DeleteNetwork();
+    network->ClearAllNeuronsNumber();
+    network->SetLayersNumber(0);
     ui->gB_TworzenieSieci->setEnabled(true);
     ui->pB_BudujSiec->setEnabled(true);
     ui->pB_UsunSiec->setEnabled(false);
@@ -98,7 +96,7 @@ void MainWindow::on_pB_UsunSiec_pressed()
 
 void MainWindow::on_pB_BudujSiec_clicked()
 {
-    Create_Network networkDataDialog(&(this->network), this);
+    Create_Network networkDataDialog((this->network), this);
     if(ui->rB_StworzSiecRecznie->isChecked())
     {
         networkDataDialog.exec();
@@ -125,8 +123,8 @@ void MainWindow::on_pB_BudujSiec_clicked()
             fileNames = loadDialog.selectedFiles();
         if(!fileNames.isEmpty())
         {
-            this->network.LoadNetwork(fileNames[0].toStdString().c_str());
-            if(this->network.GetLayersNumber() != 0)
+            this->network->LoadNetwork(fileNames[0].toStdString().c_str());
+            if(this->network->GetLayersNumber() != 0)
             {
                 ui->pB_UsunSiec->setEnabled(true);
                 ui->pB_BudujSiec->setEnabled(false);
@@ -177,7 +175,7 @@ void MainWindow::on_pB_SaveNetwork_clicked()
     if(!fileNames.isEmpty())
     {
         //  Save the network
-        this->network.SaveNetwork(fileNames[0].toStdString());
+        this->network->SaveNetwork(fileNames[0].toStdString());
     }
     else
         DisplayWarning(NETWORK_NOT_SAVED);
@@ -234,9 +232,7 @@ void MainWindow::on_hS_Threshold_valueChanged(int value)
          image->HandMadeThreshold(image->GetHSV(V_channel), value);
 
 
-        /* erode(kontury, kontury, 21);
-         morphologyEx(kontury, kontury, MORPH_OPEN, 3 );
-         medianBlur(kontury, kontury, 3);*/
+
          image->FindContours();
 
          image->CalculateHuMoments();
@@ -329,6 +325,11 @@ void MainWindow::LoadImages(string directory)
 void MainWindow::on_pB_nextImage_clicked()
 {
 
+   /* if(ui->lE_Classifiation->text().isEmpty() || ui->lE_ExpectedOutput->text().isEmpty())
+    {
+        DisplayWarning("Wartość oczekiwana lub nazwa obiektu nie wpisane.");
+        return;
+    }*/
     if(teacher->GetExpectedOutputSize()>= imageFileNames.size())
     {
         if(!ui->pB_startTeaching->isEnabled())
@@ -342,7 +343,7 @@ void MainWindow::on_pB_nextImage_clicked()
         object teachingObject;
         teachingObject.name = objectName;
         teachingObject.expectedOutputValue = expectedOutput;
-        this->network.AddTaughtObject(teachingObject);
+        this->network->AddTaughtObject(teachingObject);
         teacher->SetImage(this->image);
         this->teacher->AppendTeachingExampleFromTheLoadedImage(expectedOutput);
         teachingImageCounter++;
@@ -359,12 +360,15 @@ void MainWindow::on_pB_nextImage_clicked()
 
 void MainWindow::on_lE_ExpectedOutput_returnPressed()
 {
-    on_pB_nextImage_clicked();
+    //on_pB_nextImage_clicked();
+    ui->lE_Classifiation->selectAll();
+    ui->lE_Classifiation->setFocus();
+
 }
 
 void MainWindow::on_pB_startTeaching_clicked()
 {
-     network.SetTaught();
+     network->SetTaught();
     double value;
     value = ui->lE_momentum->text().toDouble();
     this->teacher->SetMomentum(value);
@@ -379,26 +383,25 @@ void MainWindow::on_pB_startTeaching_clicked()
     this->teacher->SetQualificationError(value);
 
     this->teacher->BackPropagationAlgorithm();
-
 }
 
 void MainWindow::on_pB_Classify_clicked()
 {
     vector <double> input;
-    input.resize(this->network.GetNeuronsNumber(0));
-    for(uint16_t i=0; i<this->network.GetNeuronsNumber(0)-1;i++)
+    input.resize(this->network->GetNeuronsNumber(0));
+    for(uint16_t i=0; i<this->network->GetNeuronsNumber(0)-1;i++)
     {
         input[i] = image->GetHuMoment(i);
     }
-    input[network.GetNeuronsNumber(0)-1] = image->GetMalinowskaCoefficient();
+    input[network->GetNeuronsNumber(0)-1] = image->GetMalinowskaCoefficient();
 
 
-    this->network.LoadNetworkInput(input);
-    network.CalculateNetworkAnswer();
-    network.CalculateMinimalDistance(network.GetNetworkAnswer());
+    this->network->LoadNetworkInput(input);
+    network->CalculateNetworkAnswer();
+    network->CalculateMinimalDistance(network->GetNetworkAnswer());
 
-    this->ui->lE_Classifiation->setText(QString::fromStdString(network.GetClassifiedObjectName()));
-    this->ui->lE_output->setText(QString::number(network.GetNetworkAnswer()));
+    this->ui->lE_Classifiation->setText(QString::fromStdString(network->GetClassifiedObjectName()));
+    this->ui->lE_output->setText(QString::number(network->GetNetworkAnswer()));
 }
 
 
@@ -467,12 +470,21 @@ void MainWindow::on_lE_momentum_textChanged(const QString &arg1)
 void MainWindow::on_lE_networkErrorThreshold_textChanged(const QString &arg1)
 {
     QString text = arg1;
+
     int pos =  ui->lE_networkErrorThreshold->cursorPosition();
     QValidator::State state = ui->lE_networkErrorThreshold->validator()->validate(text, pos);
     if(state == QValidator::Invalid || (state == QValidator::Intermediate))
     {
         ui->lE_networkErrorThreshold->backspace();
     }
+    /*for(uint16_t i=0; i<arg1.size(); i++)
+    {
+        if(text[i]==',')
+        {
+            text[i] = '.';
+            ui->lE_networkErrorThreshold->setText(text);
+        }
+    }*/
 }
 
 void MainWindow::on_lE_maxTeacyingCycleNumber_textChanged(const QString &arg1)
@@ -508,11 +520,4 @@ void MainWindow::UpdateNetworkError()
     this->ui->lE_CurrentNetworkError->setText(QString::number(this->teacher->GetEntireNetworkError()));
 }
 
-void MainWindow::SecondThread()
-{
-    /*UpdateThread newThread = UpdateThread(this->teacher, this->ui);
-    newThread.start();
-    newThread.quit();
-    newThread.wait(100);
-    newThread.terminate();*/
-}
+

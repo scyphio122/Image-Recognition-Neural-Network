@@ -6,6 +6,7 @@
 #include "image.h"
 #include "teacher.h"
 
+
 #define NETWORK_NOT_SAVED   "Sieć nie została zapisana."
 #define NETWORK_NOT_LOADED  "Sieć nie została wczytana."
 
@@ -19,12 +20,14 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    Network network;
+    Network *network;
     Image  *image;
-    Image  *contour;
     Teacher *teacher;
     QStringList imageFileNames;
     uint16_t    teachingImageCounter;
+    void UpdateProgressBar();
+    void UpdateNetworkError();
+    void GetNetworkTeacherImage(Network *network, Teacher* teacher, Image* image);
     ~MainWindow();
 
 private slots:
@@ -33,7 +36,6 @@ private slots:
     void ConvertMat2QPixmap(Mat image, QPixmap &pixmap);
     void LoadImages(string directory);
 
-    void SecondThread();
 
     void on_pB_UsunSiec_pressed();
 
@@ -68,12 +70,12 @@ private slots:
 
     void on_lE_ExpectedOutput_textChanged(const QString &arg1);
 
-    void UpdateProgressBar();
-    void UpdateNetworkError();
+
 
 
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H

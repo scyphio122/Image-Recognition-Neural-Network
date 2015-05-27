@@ -15,13 +15,18 @@ Network::Network()
 Network::~Network()
 {
     DeleteNetwork();
+
 }
 /**
  * @brief Network::DeleteNetwork    -   This function is cslled in order to destroy already created network
  */
 void Network::DeleteNetwork()
 {
-    this->layer.clear();
+    if(!layer.empty())
+        this->layer.clear();
+    if(!taughtObjects.empty())
+        this->taughtObjects.clear();
+    this->networkTaught = false;
 }
 
 /**

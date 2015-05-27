@@ -1,10 +1,10 @@
 #ifndef UPDATETHREAD_H
 #define UPDATETHREAD_H
 #include "teacher.h"
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+
 #include <QThread>
 
+class MainWindow;
 class UpdateThread: public QThread
 {
 private:
@@ -13,7 +13,7 @@ private:
     void run();
 public:
     UpdateThread();
-    UpdateThread(Teacher* teacher, Ui::MainWindow* ui);
+    UpdateThread(Teacher* teacher, MainWindow *ui);
 
     ~UpdateThread();
 };

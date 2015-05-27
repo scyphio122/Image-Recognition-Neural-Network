@@ -33,6 +33,7 @@ private:
     double        CalculateWeight(Connection* connection);
 
 
+
 public:
     Teacher();
     ~Teacher();

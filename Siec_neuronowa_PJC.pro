@@ -25,7 +25,6 @@ SOURCES += main.cpp\
     teacher.cpp \
     image.cpp \
     imageparameters.cpp \
-    updatethread.cpp \
     classifier.cpp
 
 HEADERS  += mainwindow.h \
@@ -40,7 +39,6 @@ HEADERS  += mainwindow.h \
     teacher.h \
     image.h \
     imageparameters.h \
-    updatethread.h \
     classifier.h
 
 FORMS    += mainwindow.ui \
