@@ -169,9 +169,9 @@ void Network::SaveNetwork(string directory)
         SaveData("\n");
         for(uint16_t i=0; i<taughtObjects.size();i++)
         {
-            dataToSave = QString::number(taughtObjects[i].expectedOutputValue);
+            dataToSave = QString::number(taughtObjects[i].GetExpectedOutput());
             SaveData(dataToSave.toStdString());
-            SaveData(taughtObjects[i].name);
+            SaveData(taughtObjects[i].GetName());
             SaveData("\n");
         }
     }
@@ -220,13 +220,13 @@ bool Network::LoadNetwork(string directory)
     {
         string taughtObjectsValue;
         string taughtObjectsName;
-        object taughtObject;
+        ClassifiedObject taughtObject;
         do
         {
             LoadData(taughtObjectsValue);
-            taughtObject.expectedOutputValue = atof(taughtObjectsValue.c_str());
+            taughtObject.SetExpectedOutput(atof(taughtObjectsValue.c_str()));
             LoadData(taughtObjectsName);
-            taughtObject.name = taughtObjectsName;
+            taughtObject.SetName(taughtObjectsName);
             this->AddTaughtObject(taughtObject);
         }while(!this->loadFromFile->eof());
     }

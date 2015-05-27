@@ -325,24 +325,27 @@ void MainWindow::LoadImages(string directory)
 void MainWindow::on_pB_nextImage_clicked()
 {
 
-   /* if(ui->lE_Classifiation->text().isEmpty() || ui->lE_ExpectedOutput->text().isEmpty())
+    if(ui->lE_ObjectName->text().isEmpty() || ui->lE_ExpectedOutput->text().isEmpty())
     {
-        DisplayWarning("Wartość oczekiwana lub nazwa obiektu nie wpisane.");
+        DisplayWarning("Wartość oczekiwana lub nazwa obiektu nie wpisane. Uzupełnij pola.");
         return;
-    }*/
+    }
     if(teacher->GetExpectedOutputSize()>= imageFileNames.size())
     {
         if(!ui->pB_startTeaching->isEnabled())
             ui->pB_startTeaching->setEnabled(true);
         return;
     }
+
+    ui->lE_ExpectedOutput->selectAll();
+    ui->lE_ExpectedOutput->setFocus();
     if(teachingImageCounter <imageFileNames.size())
     {
         string objectName = ui->lE_ObjectName->text().toStdString();
         double expectedOutput = ui->lE_ExpectedOutput->text().toDouble();
-        object teachingObject;
-        teachingObject.name = objectName;
-        teachingObject.expectedOutputValue = expectedOutput;
+        ClassifiedObject teachingObject;
+        teachingObject.SetName(objectName);
+        teachingObject.SetExpectedOutput(expectedOutput);
         this->network->AddTaughtObject(teachingObject);
         teacher->SetImage(this->image);
         this->teacher->AppendTeachingExampleFromTheLoadedImage(expectedOutput);
@@ -361,8 +364,8 @@ void MainWindow::on_pB_nextImage_clicked()
 void MainWindow::on_lE_ExpectedOutput_returnPressed()
 {
     //on_pB_nextImage_clicked();
-    ui->lE_Classifiation->selectAll();
-    ui->lE_Classifiation->setFocus();
+    ui->lE_ObjectName->selectAll();
+    ui->lE_ObjectName->setFocus();
 
 }
 
@@ -382,7 +385,12 @@ void MainWindow::on_pB_startTeaching_clicked()
     value = ui->lE_networkErrorThreshold->text().toDouble();
     this->teacher->SetQualificationError(value);
 
-    this->teacher->BackPropagationAlgorithm();
+    double networkError = this->teacher->BackPropagationAlgorithm();
+
+    string teachingEnded = "Sieć nauczona. Obecny błąd sieci Wynosi: ";
+    string error = QString::number(networkError).toStdString();
+    teachingEnded += error;
+    DisplayWarning(teachingEnded);
 }
 
 void MainWindow::on_pB_Classify_clicked()
@@ -477,14 +485,6 @@ void MainWindow::on_lE_networkErrorThreshold_textChanged(const QString &arg1)
     {
         ui->lE_networkErrorThreshold->backspace();
     }
-    /*for(uint16_t i=0; i<arg1.size(); i++)
-    {
-        if(text[i]==',')
-        {
-            text[i] = '.';
-            ui->lE_networkErrorThreshold->setText(text);
-        }
-    }*/
 }
 
 void MainWindow::on_lE_maxTeacyingCycleNumber_textChanged(const QString &arg1)
@@ -510,14 +510,10 @@ void MainWindow::on_lE_ExpectedOutput_textChanged(const QString &arg1)
     }
 }
 
-void MainWindow::UpdateProgressBar()
+
+void MainWindow::on_lE_ObjectName_returnPressed()
 {
-    this->ui->progressBar->setValue(this->teacher->GetProgress());
+    ui->lE_ObjectName->clearFocus();
+    ui->lE_ObjectName->deselect();
+    ui->pB_nextImage->setFocus();
 }
-
-void MainWindow::UpdateNetworkError()
-{
-    this->ui->lE_CurrentNetworkError->setText(QString::number(this->teacher->GetEntireNetworkError()));
-}
-
-

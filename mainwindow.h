@@ -73,6 +73,8 @@ private slots:
 
 
 
+    void on_lE_ObjectName_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 

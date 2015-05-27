@@ -57,7 +57,7 @@ public:
     void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
     uint8_t     RandomizeTeachingExample(vector<vector<double> > *exampleTable);
-    void        BackPropagationAlgorithm();
+    double BackPropagationAlgorithm();
     void        CalculateProgress(unsigned long long teachingCounter);
     uint8_t     GetProgress();
 

@@ -3,22 +3,22 @@
 #include <string>
 #include <QVector>
 #include <stdint-gcc.h>
-
+#include "classifiedobject.h"
 using namespace std;
-struct object
+/*struct object
 {
     double expectedOutputValue;
     string name;
 };
-
+*/
 class Classifier
 {
 protected:
-    QVector <object>    taughtObjects;
+    QVector <ClassifiedObject>    taughtObjects;
     double              minimalDistance;
     uint16_t            classifiedObjectIndex;
 public:
-    void    AddTaughtObject(object example);
+    void    AddTaughtObject(ClassifiedObject example);
     string  GetClassifiedObjectName();
     void    CalculateMinimalDistance(double networkOutput);
 

@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     teacher.cpp \
     image.cpp \
     imageparameters.cpp \
-    classifier.cpp
+    classifier.cpp \
+    classifiedobject.cpp
 
 HEADERS  += mainwindow.h \
     layer.h \
@@ -39,7 +40,8 @@ HEADERS  += mainwindow.h \
     teacher.h \
     image.h \
     imageparameters.h \
-    classifier.h
+    classifier.h \
+    classifiedobject.h
 
 FORMS    += mainwindow.ui \
     create_network.ui

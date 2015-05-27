@@ -453,8 +453,8 @@
     <widget class="QPushButton" name="pB_Classify">
      <property name="geometry">
       <rect>
-       <x>630</x>
-       <y>530</y>
+       <x>620</x>
+       <y>440</y>
        <width>211</width>
        <height>41</height>
       </rect>
@@ -485,7 +485,7 @@
        <x>610</x>
        <y>130</y>
        <width>241</width>
-       <height>391</height>
+       <height>301</height>
       </rect>
      </property>
      <property name="title">
@@ -632,12 +632,12 @@
        <rect>
         <x>20</x>
         <y>180</y>
-        <width>111</width>
+        <width>211</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Wartość oczekiwana:</string>
+       <string>Wartość oczekiwana (z przedziału [-1; 1]):</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="lE_ExpectedOutput">
@@ -677,61 +677,6 @@
       </property>
       <property name="text">
        <string>Wczytaj parametry</string>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBar">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>320</y>
-        <width>161</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_8">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>300</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Progres uczenia:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lE_CurrentNetworkError">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>360</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_18">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>360</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Aktualny błąd sieci:</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_21">

@@ -77,7 +77,7 @@ uint8_t Teacher::RandomizeTeachingExample(vector <vector<double> > *exampleTable
     return (rand()*871+71)%(exampleTable->size());
 }
 
-void Teacher::BackPropagationAlgorithm()
+double Teacher::BackPropagationAlgorithm()
 {
 
     double entireNetworkErrorForAllExamples;
@@ -149,7 +149,7 @@ void Teacher::BackPropagationAlgorithm()
         cout<<"\nCalkowity blad sieci dla wszystkich przykladow: "<<entireNetworkErrorForAllExamples+0<<endl;
     }while(entireNetworkErrorForAllExamples > qualificationThreshold && teachingCycleCounter < maxTeachingCycleCounter);
 
-
+    return entireNetworkErrorForAllExamples;
 }
 
 void Teacher::SetNetwork(Network *networkToSet)
