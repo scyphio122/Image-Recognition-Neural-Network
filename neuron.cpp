@@ -61,10 +61,13 @@ void Neuron::AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber)
  */
 void Neuron::LoadSignalInNextNeurons(double signal)
 {
+    CommonNeuron* connectedNeuron;
     //  The input is a sum of each neuron is multiplication of weight and outputs from the biasNeuron (sourceConnectionIndex == 0) and previousLayer neurons
     for(uint16_t targetConnectionIndex=0; targetConnectionIndex<this->ConnectionsSize(); targetConnectionIndex++)
     {
-        this->targetNeuronConnection[targetConnectionIndex].GetConnectedNeuron()->input += this->targetNeuronConnection[targetConnectionIndex].GetWeight()*signal;
+        connectedNeuron = dynamic_cast<CommonNeuron*>(this->targetNeuronConnection[targetConnectionIndex].GetConnectedNeuron());
+        if(connectedNeuron != NULL)
+            connectedNeuron->AddToInput(this->targetNeuronConnection[targetConnectionIndex].GetWeight()*signal);
     }
 }
 
@@ -73,7 +76,17 @@ void Neuron::LoadSignalInNextNeurons(double signal)
  */
 void Neuron::CalculateOutput()
 {
-     double x = this->input;
+    CommonNeuron* neuron = NULL;
+    double x;
+    Bias* bias = dynamic_cast<Bias*>(this);
+    if(bias == NULL)
+    {
+        neuron = dynamic_cast<CommonNeuron*>(this);
+        x = neuron->GetInput();
+    }
+    else
+        x = bias->GetInput();
+
 
 #ifdef    BIPOLAR_SIGMOID_FUNCTION
         this->output = 2/(1 + exp(-beta*x)) - 1;
@@ -85,10 +98,7 @@ void Neuron::CalculateOutput()
     return;
 }
 
-double Neuron::GetInput()
-{
-    return this->input;
-}
+
 double Neuron::GetNeuronError()
 {
     return this->neuronError;

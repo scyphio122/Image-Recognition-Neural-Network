@@ -38,11 +38,23 @@ void Teacher::CalculateLastNeuronError(CommonNeuron *outputNeuron, double expect
 void Teacher::CalculateCommonNeuronError(Neuron* thisNeuron)
 {
     double sum = 0;
+    double input;
+    CommonNeuron* neuron;
+    Bias* bias = dynamic_cast<Bias*>(thisNeuron);
+    if(bias == NULL)
+    {
+        neuron = dynamic_cast<CommonNeuron*>(thisNeuron);
+        input = neuron->GetInput();
+    }
+    else
+    {
+        input = bias->GetInput();
+    }
     for(uint16_t i=0; i<thisNeuron->ConnectionsSize(); i++)
     {
         sum += thisNeuron->GetConnectionAt(i)->GetConnectedNeuron()->GetNeuronError()*thisNeuron->GetConnectionAt(i)->GetWeight();
     }
-    sum = sum*TRANSFER_FUNCTION_DIFFERENTIAL(beta, thisNeuron->GetInput());
+    sum = sum*TRANSFER_FUNCTION_DIFFERENTIAL(beta, input);
     thisNeuron->SetNeuronError(sum);
 }
 
@@ -72,7 +84,7 @@ void Teacher::CalculateEntireNetworkErrorForCurrentExample(double expectedOutput
  * @param exampleTable  -   The pointer to the table containing all the known examples to be taught
  * @return  The pointer to the randomized example
  */
-uint8_t Teacher::RandomizeTeachingExample(vector <vector<double> > *exampleTable)
+uint16_t Teacher::RandomizeTeachingExample(vector <vector<double> > *exampleTable)
 {
     return (rand()*871+71)%(exampleTable->size());
 }

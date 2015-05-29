@@ -92,6 +92,8 @@ void MainWindow::on_pB_UsunSiec_pressed()
     ui->cB_Teaching->setChecked(false);
     ui->gB_teachingParameters->setEnabled(false);
     ui->pB_SaveNetwork->setEnabled(false);
+    ui->lE_originalImage->clear();
+    ui->lE_Contour->clear();
 }
 
 void MainWindow::on_pB_BudujSiec_clicked()
@@ -140,6 +142,7 @@ void MainWindow::on_pB_BudujSiec_clicked()
     }
     if(networkDataDialog.GetProceedWithLoading() == true)
     {
+        ui->gB_TworzenieSieci->setEnabled(false);
         ui->pB_UsunSiec->setEnabled(true);
         ui->pB_BudujSiec->setEnabled(false);
         ui->gB_LoadingImages->setEnabled(true);

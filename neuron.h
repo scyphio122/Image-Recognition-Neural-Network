@@ -24,7 +24,6 @@ class CommonNeuron;
 class Neuron
 {
 protected:
-    double input;
     double output;
     double neuronError;
     QList<Connection> targetNeuronConnection;
@@ -33,7 +32,7 @@ protected:
 
 public:
     Neuron();
-    ~Neuron();
+    virtual ~Neuron();
     void        CalculateOutput();
     double      GetOutput();
     Connection* GetConnectionAt(uint16_t index);
@@ -45,7 +44,6 @@ public:
     void        AllocateMemoryForTargetConnectionsList(uint16_t connectionsNumber);
     double      GetNeuronError();
     void        SetNeuronError(double value);
-    double      GetInput();
     uint16_t    ConnectionsSize();
     void        LoadSignalInNextNeurons(double signal);
 

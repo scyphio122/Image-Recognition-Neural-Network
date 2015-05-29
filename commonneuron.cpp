@@ -112,3 +112,12 @@ void CommonNeuron::LoadInput_InputLayer(double input)
     this->input = input;
 }
 
+double CommonNeuron::GetInput()
+{
+    return this->input;
+}
+
+void CommonNeuron::AddToInput(double value)
+{
+    this->input += value;
+}

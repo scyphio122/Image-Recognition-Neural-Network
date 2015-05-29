@@ -5,9 +5,12 @@
 
 class Bias:public Neuron
 {
+private:
+    static const double input = 1;
 public:
+    double      GetInput();
     Bias();
-    ~Bias();
+    virtual ~Bias();
 
 };
 

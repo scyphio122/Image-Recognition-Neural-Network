@@ -56,7 +56,7 @@ public:
     void        CalculateEntireNetworkErrorForCurrentExample(double expectedOutput);
     void        ChangeWeight(Connection* connection, Neuron* sourceNeuron);
     uint32_t    GetTeachingCycleCounter();
-    uint8_t     RandomizeTeachingExample(vector<vector<double> > *exampleTable);
+    uint16_t     RandomizeTeachingExample(vector<vector<double> > *exampleTable);
     double BackPropagationAlgorithm();
     void        CalculateProgress(unsigned long long teachingCounter);
     uint8_t     GetProgress();
